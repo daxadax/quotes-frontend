@@ -1,0 +1,3 @@
+%ul.attributes-container
+  -attributes.each do |attribute, count|
+    %li.attribute=link_to "/#{kind}/#{attribute}", attribute, {:class => "attribute-#{count}"}

@@ -1,0 +1,10 @@
+.confirm-delete
+  %h4 Are you sure?
+
+  %p= "You are about to remove the following quote from #{quote.title} by #{quote.author}:"
+
+  %p= quote.content
+
+  %form{ :action => '', :method => 'post'}
+    %input{:type => 'submit', :value => 'Confirm delete', :class => 'button'}
+    = "or #{link_to "/quote/#{quote.id}", 'cancel', {:class => 'button'}}"

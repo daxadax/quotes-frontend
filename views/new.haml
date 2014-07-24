@@ -1,0 +1,24 @@
+%ul
+  %li
+    %input{:type => 'text', :name => 'author', :placeholder => "Author", :class => 'form-field-no-label'}
+  %li
+    %input{:type => 'text', :name => 'title', :placeholder => "Title", :class => 'form-field-no-label'}
+  %br
+  %li.inner-form
+    %label{:for => 'year', :class => 'form-label'} Year:
+    %input{:type => 'text', :name => 'year', :class => 'form-field'}
+  %li.inner-form
+    %label{:for => 'publisher', :class => 'form-label'} Publisher:
+    %input{:type => 'text', :name => 'publisher', :class => 'form-field'}
+  %li.inner-form
+    %label{:for => 'title', :class => 'form-label'} Page Number:
+    %input{:type => 'text', :name => 'page_number', :class => 'form-field'}
+  %br.clear
+  %li
+    %label{:for => 'content', :class => 'form-label'} Content:
+    %textarea{:name => 'content', :class => 'form-textarea'}
+  %li
+    %label{:for => 'tags', :class => 'form-label'} Tags:
+    %input{:type => 'text', :name => 'tags', :placeholder => 'Enter tags separated by commas', :class => 'form-field-tags'}
+
+%input{:type => 'submit', :value => 'Submit new values', :class => 'button float-right'}

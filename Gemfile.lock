@@ -1,0 +1,45 @@
+PATH
+  remote: ../quotes_backend
+  specs:
+    quotes (0.0.1)
+      bound
+      kindleclippings (~> 1.3.3)
+      nokogiri (~> 1.6.1)
+      sequel (~> 4.10.0)
+      sqlite3 (~> 1.3.9)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    bound (2.1.0)
+    haml (4.0.5)
+      tilt
+    kindleclippings (1.3.4)
+    mini_portile (0.6.0)
+    nokogiri (1.6.2.1)
+      mini_portile (= 0.6.0)
+    rack (1.5.2)
+    rack-protection (1.5.3)
+      rack
+    redcarpet (3.1.2)
+    sass (3.3.7)
+    sequel (4.10.0)
+    shotgun (0.9)
+      rack (>= 1.0)
+    sinatra (1.4.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
+    sqlite3 (1.3.9)
+    tilt (1.4.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  haml
+  quotes!
+  redcarpet
+  sass
+  shotgun
+  sinatra

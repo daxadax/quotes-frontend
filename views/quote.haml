@@ -1,0 +1,15 @@
+.quote-container.clear
+  %h3.author.float-left
+    .star-holder
+      = render :haml, :star, :locals => { :quote => quote }
+    .float-left= show_author_for quote
+  %h4.title.float-right=  show_title_for quote
+  %p.content.clear= markdown quote.content
+
+  %ul
+    -quote.tags.each do |tag|
+      %li.tag= link_to "/tag/#{tag}", tag
+
+  .actions
+    .edit.action.float-left= link_to "/edit/#{quote.id}", 'edit'
+    .delete.action= link_to "/delete/#{quote.id}", 'delete'

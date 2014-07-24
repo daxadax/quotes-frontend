@@ -1,0 +1,10 @@
+#form
+  %form{ :action => '', :method => 'post'}
+    =render :haml,  :edit,
+                    :locals => {:quote => quote} rescue render :haml, :new
+#form-sidebar
+  .form-sidebar-header
+    %h3 Most used tags
+  .form-sidebar-content
+    = render :haml, :attribute_index,
+                    :locals => {:attributes => tags,:kind => 'tag'}
