@@ -12,30 +12,6 @@ class ApplicationBase < Sinatra::Application
       quotes.select {|q| q.starred == true}
     end
 
-    def get_quotes
-      use_case  = Quotes::UseCases::GetQuotes.new
-      result    = use_case.call.quotes
-
-      return [] if result.empty?
-      result.reverse
-    end
-
-    def get_tags
-      @tags ||= build_attributes quotes.flat_map(&:tags)
-    end
-
-    def get_top_tags
-      @top_tags ||= get_tags.select{ |tag, count| count > 0}
-    end
-
-    def get_authors
-      @authors ||= build_attributes quotes.flat_map(&:author)
-    end
-
-    def get_titles
-      @titles ||= build_attributes quotes.flat_map(&:title)
-    end
-
     def quote_by_id(id)
       input   = { :id => id }
       result  = call_use_case(:GetQuote, input)
@@ -119,6 +95,30 @@ class ApplicationBase < Sinatra::Application
       input = { :id => id }
 
       call_use_case(:ToggleStar, input)
+    end
+
+    def get_quotes
+      use_case  = Quotes::UseCases::GetQuotes.new
+      result    = use_case.call.quotes
+
+      return [] if result.empty?
+      result.reverse
+    end
+
+    def get_tags
+      @tags ||= build_attributes quotes.flat_map(&:tags)
+    end
+
+    def get_top_tags
+      @top_tags ||= get_tags.select{ |tag, count| count > 0}
+    end
+
+    def get_authors
+      @authors ||= build_attributes quotes.flat_map(&:author)
+    end
+
+    def get_titles
+      @titles ||= build_attributes quotes.flat_map(&:title)
     end
 
     def build_attributes(attributes)
