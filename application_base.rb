@@ -67,14 +67,14 @@ class ApplicationBase < Sinatra::Application
 
       input = {
         :id           => id,
-        :author       => params[:author] || quote.author,
-        :title        => params[:title] || quote.title,
-        :content      => params[:content] || quote.content,
-        :year         => params[:year]|| quote.year,
-        :publisher    => params[:publisher] || quote.publisher,
-        :page_number  => params[:page_number] || quote.page_number,
-        :tags         => build_tags(quote.tags),
-        :links        => params[:links] || quote.links
+        :author       => params[:author]        || quote.author,
+        :title        => params[:title]         || quote.title,
+        :content      => params[:content]       || quote.content,
+        :year         => params[:year]          || quote.year,
+        :publisher    => params[:publisher]     || quote.publisher,
+        :page_number  => params[:page_number]   || quote.page_number,
+        :links        => params[:links]         || quote.links,
+        :tags         => build_tags(quote.tags)
       }
 
       call_use_case(:UpdateQuote, {:quote => input})
@@ -125,10 +125,10 @@ class ApplicationBase < Sinatra::Application
       hash = Hash.new { |h, k| h[k] = 0}
 
       attributes.inject { |last, attribute| hash[attribute] += 1; attribute}
-      max_count = @max ||= hash.values.max
-      hash.each { |k, v| hash[k] = build_relative_attribute_count(max_count, v) }
+      # max_count = @max ||= hash.values.max
+      # hash.each { |k, v| hash[k] = build_relative_attribute_count(max_count, v) }
 
-      hash.sort_by {|k, v| k}
+      hash.sort_by {|k, v| v}.reverse
     end
 
     def build_relative_attribute_count(max, value)

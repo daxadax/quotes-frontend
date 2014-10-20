@@ -1,3 +1,8 @@
-%ul.attributes-container
-  -attributes.each do |attribute, count|
-    %li.attribute=link_to "/#{kind}/#{attribute}", attribute, {:class => "attribute-#{count}"}
+%table.attributes-table
+  %tr
+    %th.attribute= kind.capitalize
+    %th.count Number of Quotes
+    - attributes.each do |attribute, count|
+      %tr.attribute-row
+        %td.attribute=link_to "/#{kind}/#{attribute}", attribute
+        %td.count= count
