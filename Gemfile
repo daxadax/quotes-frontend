@@ -4,7 +4,10 @@ gem 'sinatra'
 gem 'haml'
 gem 'sass'
 gem 'redcarpet'
-gem 'quotes', :path => '../quotes_backend'
+
+gem 'persistence',  :path => '../persistence'
+gem 'users',        :path => '../users'
+gem 'quotes',       :path => '../quotes_backend'
 
 group :development do
 
