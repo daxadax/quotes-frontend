@@ -2,12 +2,12 @@ source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'haml'
-gem 'sass'
 gem 'redcarpet'
 
-gem 'persistence',  :path => '../persistence'
-gem 'users',        :path => '../users'
-gem 'quotes',       :path => '../quotes_backend'
+gem 'manager', :path => '../manager'
+gem 'users', :path => '../users'
+gem 'quotes', :path => '../quotes_backend'
+gem 'persistence', :path => '../persistence'
 
 group :development do
 

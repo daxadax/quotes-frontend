@@ -3,10 +3,6 @@ require 'bundler/setup'
 
 require 'users'
 require 'quotes'
-require 'sass/plugin/rack'
-
-Sass::Plugin.options[:style] = :compressed
-use Sass::Plugin::Rack
 
 Bundler.require
 
