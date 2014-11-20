@@ -13,7 +13,7 @@ class QuotesApp < ApplicationBase
     query   = search_results.query
 
     msg = "#{results.count} quotes"
-    msg += " tagged #{tags.map(&:upcase).join(' and ')}" if tags.any?
+    msg += " tagged #{tags.join(' and ')}" if tags.any?
     msg += " that include '#{query}'" unless query.empty?
 
     haml :index, :locals => {
@@ -22,13 +22,67 @@ class QuotesApp < ApplicationBase
     }
   end
 
-  get '/quote/:id' do
-    haml :index, :locals => {:quotes => [quote_by_id(id)]}
+  ######### start quotes #########
+
+  get '/quote/:uid' do
+    haml :index, :locals => {:quotes => [quote_by_uid(uid)]}
   end
 
   get '/quotes' do
     haml :index, :locals => {:quotes => quotes}
   end
+
+  get '/new/quote' do
+    form_page
+
+    haml "forms/new_quote".to_sym
+  end
+
+  post 'quote/new' do
+    result = build_quote
+    if use_case_type_of(result, 'Success')
+      redirect "/quote/#{result.uid}"
+    else
+      redirect '/quote/new'
+    end
+  end
+
+  get 'quote/edit/:uid' do
+    form_page
+
+    haml "forms/edit_quote".to_sym, :locals => {
+      :quote  => quote_by_uid(uid)
+    }
+  end
+
+  post 'quote/edit/:uid' do
+    update_quote
+
+    redirect "/quote/#{uid}"
+  end
+
+  get 'quote/delete/:uid' do
+    form_page
+
+    haml :confirm_delete, :locals => {:quote => quote_by_uid(uid)}
+  end
+
+  post 'quote/delete/:uid' do
+    result = delete_quote
+
+    if result != 0
+      msg = "Quote with ID ##{uid} has been deleted"
+    else
+      msg = "Something went wrong.  Quote with ID #{uid} was not deleted"
+    end
+
+    haml :index, :locals => {
+      :quotes   => quotes,
+      :message  => msg
+    }
+  end
+
+  ######### end quotes #########
 
   get '/tag/:tag' do
     haml :index, :locals => {:quotes => quotes_by_tag(params[:tag])}
@@ -72,60 +126,9 @@ class QuotesApp < ApplicationBase
     }
   end
 
-  get '/new' do
-    form_page
-
-    haml :form, :locals => {:tags => get_top_tags}
-  end
-
-  post '/new' do
-    result = build_quote
-    if use_case_type_of(result, 'Success')
-      redirect "/quote/#{result.id}"
-    else
-      redirect '/new'
-    end
-  end
-
-  get '/edit/:id' do
-    form_page
-
-    haml :form, :locals => {
-      :tags   => get_top_tags,
-      :quote  => quote_by_id(id)
-    }
-  end
-
-  post '/edit/:id' do
-    update_quote
-
-    redirect "/quote/#{id}"
-  end
-
-  get '/delete/:id' do
-    form_page
-
-    haml :confirm_delete, :locals => {:quote => quote_by_id(id)}
-  end
-
-  post '/delete/:id' do
-    result = delete_quote
-
-    if result != 0
-      msg = "Quote with ID ##{id} has been deleted"
-    else
-      msg = "Something went wrong.  Quote with ID #{id} was not deleted"
-    end
-
-    haml :index, :locals => {
-      :quotes   => quotes,
-      :message  => msg
-    }
-  end
-
   get '/toggle_star' do
     toggle_star
-    render :haml, :star, :layout => nil, :locals => { :quote => quote_by_id(id) }
+    render :haml, :star, :layout => nil, :locals => { :quote => quote_by_uid(uid) }
   end
 
 end

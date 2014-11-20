@@ -1,0 +1,3 @@
+#form
+  %form{ :action => '', :method => 'post'}
+    =render   :haml,  :edit, :locals => {:quote => quote} rescue render :haml, :new

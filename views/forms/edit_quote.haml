@@ -1,0 +1,21 @@
+#form
+  %form{ :action => 'edit', :method => 'post'}
+    .form-control
+      %input{:type => 'text', :name => 'author', :value => quote.author}
+      %input{:type => 'text', :name => 'title', :value => quote.title}
+      %label{:for => 'year'} Year:
+      %input{:type => 'text', :name => 'year', :value => quote.year}
+      %label{:for => 'publisher'} Publisher:
+      %input{:type => 'text', :name => 'publisher', :value => quote.publisher}
+      %label{:for => 'title'} Page Number:
+      %input{:type => 'text', :name => 'page_number', :value => quote.page_number}
+      %label{:for => 'content'} Content:
+      %textarea{:name => 'content'}
+      =quote.content
+      %label{:for => 'tags'} Tags:
+      %input{:type => 'text', :name => 'tags', :value => quote.tags.join(', ')}
+
+      %label{:for => 'links'} Linked with:
+      = render :haml, :display_links, :locals => { :quote => quote }
+
+      %input{:type => 'submit', :value => 'Update values'}
