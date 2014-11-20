@@ -1,8 +1,11 @@
 %html
 %head
+  %meta{:charset => 'utf-8',
+              :name => 'viewport',
+              :content => 'width=device-width, initial-scale=1'}
+
   %title Quotes From Underground
-  %script{:src => '/javascript/jquery2.1.1.min.js'}
-  %link(rel="stylesheet" href='/stylesheets/base.css' type='text/css')
+
 %body
   - if @form_page
     = yield
@@ -11,3 +14,9 @@
       =render :haml, :header
     #content
       =yield
+
+  %script{:src => '/javascript/jquery2.1.1.min.js'}
+  %script{:src => '/javascript/bootstrap.min.js'}
+  %link(rel="stylesheet" href='/stylesheets/bootstrap.min.css' type='text/css')
+  %link(rel="stylesheet" href='/stylesheets/override.css' type='text/css')
+  %link(rel="stylesheet" href='/stylesheets/bootstrap-theme.min.css' type='text/css')
