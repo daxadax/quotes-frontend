@@ -27,6 +27,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    bcrypt (3.1.9)
     bound (2.1.0)
     haml (4.0.5)
       tilt
@@ -52,6 +53,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
   haml
   manager!
   persistence!

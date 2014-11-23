@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'sinatra'
 gem 'haml'
 gem 'redcarpet'
+gem 'bcrypt'
 
 gem 'manager', :path => '../manager'
 gem 'users', :path => '../users'

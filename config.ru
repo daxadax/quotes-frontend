@@ -3,6 +3,7 @@ require 'bundler/setup'
 
 require 'users'
 require 'quotes'
+require 'bcrypt'
 
 Bundler.require
 
