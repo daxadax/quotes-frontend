@@ -1,7 +1,8 @@
-.messages
-  %h2= message rescue nil
-  %h2= display_relevant_count_for quotes
-
 .container
+
+  .messages
+    %h2= message rescue nil
+    %h2= display_relevant_count_for quotes
+
   -quotes.each do |quote|
     = render :haml, :quote, :locals => { :quote => quote }

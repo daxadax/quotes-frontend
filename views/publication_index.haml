@@ -1,0 +1,4 @@
+.container
+
+  -publications.each do |publication|
+    = render :haml, :publication, :locals => { :publication => publication }
