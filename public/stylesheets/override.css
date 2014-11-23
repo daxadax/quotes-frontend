@@ -10,3 +10,11 @@ body {
 a:hover {
   text-decoration: none;
 }
+
+.quote-title {
+  font-size: 200%;
+}
+
+.center {
+  text-align: center;
+}

@@ -1,3 +1,35 @@
-#form
-  %form{ :action => '', :method => 'post'}
-    =render   :haml,  :edit, :locals => {:quote => quote} rescue render :haml, :new
+%form.form-vertical{ :action => 'quote', :method => 'post', :role => 'form'}
+  %fieldset
+
+  %legend Create a new quote
+
+  .form-group
+    %label.control-label.sr-only{:for => 'publication'} Select publication
+    %select.form-control{:name => 'publication'}
+      %option Choose the title this quote belongs to
+      -publications.each do |publication|
+        %option{:value => publication.uid}= publication.title
+
+  .form-group
+    %label.control-label{:for => "content"} Content
+    %textarea.form-control{:name => "content", :rows => 7}
+
+  .form-group
+    %label.control-label{:for => "pagenumber"} Page Number
+    %input.form-control{:name => 'pagenumber',
+                                  :type => 'text',
+                                  :placeholder => 'page number'}
+
+  -# .form-group
+  -#   %label.control-label{:for => "links"} Linked quotes
+  -#   %search.form-control{:name => "links",
+  -#                                 :type => "search",
+  -#                                 :placeholder => "search for linked quotes"}
+
+  .form-group
+    %label.control-label{:for => "tags"} Tags
+    %input.form-control{:name => 'tags',
+                                  :type => 'text',
+                                  :placeholder => 'Enter tags separated by commas'}
+
+  %button.btn.btn-primary{:type => 'submit'} Add Quote

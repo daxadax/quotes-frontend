@@ -1,3 +1,4 @@
-.header-container
-  = render :haml, :search
-  = render :haml, :nav
+%nav.navbar.navbar-default.navbar-fixed-top{:role => 'navigation'}
+  .container-fluid
+    .navbar-left= render :haml, :search
+    .navbar-right= render :haml, :nav

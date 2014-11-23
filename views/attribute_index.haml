@@ -1,8 +1,9 @@
-%table.attributes-table
-  %tr
-    %th.attribute= kind.capitalize
-    %th.count Number of Quotes
-    - attributes.each do |attribute, count|
-      %tr.attribute-row
-        %td.attribute=link_to "/#{kind}/#{attribute}", attribute
-        %td.count= count
+.row
+  .col-xs-1
+  %h4.col-xs-5= kind.capitalize
+  %h4.col-xs-6 Number of Quotes
+  - attributes.each do |attribute, count|
+    .row
+      .col-xs-1
+      .col-xs-5=link_to "/#{kind}/#{attribute}", attribute
+      .col-xs-6= count

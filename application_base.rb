@@ -1,7 +1,19 @@
 class ApplicationBase < Sinatra::Application
 
     def quotes
+      #cache for 60 seconds
+
       @quotes ||= get_quotes
+    end
+
+    def publications
+      #cach for 60 seconds
+
+      @publications ||= get_publications
+    end
+
+    def current_user
+      false
     end
 
     def search_results
@@ -12,9 +24,8 @@ class ApplicationBase < Sinatra::Application
       quotes.select {|q| q.starred == true}
     end
 
-    def quote_by_id(id)
-      input   = { :id => id }
-      result  = call_use_case(:GetQuote, input)
+    def quote_by_uid(uid)
+      result  = call_use_case :get_quote, :uid => uid
 
       result.quote
     end
@@ -38,71 +49,57 @@ class ApplicationBase < Sinatra::Application
     def build_search_results
       input = { :query => params[:search] }
 
-      call_use_case(:Search, input)
+      call_use_case(:search, input)
     end
 
     def build_quote
-      year        = params[:year]         unless params[:year].empty?
-      publisher   = params[:publisher]    unless params[:publisher].empty?
-      page_number = params[:page_number]  unless params[:page_number].empty?
-      tags        = params[:tags].split(',').each(&:strip!)
-      links       = nil
+      page_number = params[:pagenumber]  unless params[:pagenumber].empty?
+      links = nil
 
       input = {
-        :author       => params[:author],
-        :title        => params[:title],
-        :content      => params[:content],
-        :year         => year,
-        :publisher    => publisher,
-        :page_number  => page_number,
-        :tags         => tags,
-        :links        => links
+        :added_by => current_user.uid,
+        :content => params[:content],
+        :publication_uid => params[:publication],
+        :page_number => page_number,
+        :tags => build_tags,
+        :links => links
       }
 
-      call_use_case(:CreateQuote, {:quote => input})
+      call_use_case(:create_quote, {:quote => input})
     end
 
     def update_quote
-      quote = quote_by_id(id)
+      quote = quote_by_uid(uid)
 
       input = {
-        :id           => id,
-        :author       => params[:author]        || quote.author,
-        :title        => params[:title]         || quote.title,
-        :content      => params[:content]       || quote.content,
-        :year         => params[:year]          || quote.year,
-        :publisher    => params[:publisher]     || quote.publisher,
-        :page_number  => params[:page_number]   || quote.page_number,
-        :links        => params[:links]         || quote.links,
-        :tags         => build_tags(quote.tags)
+        :uid => uid,
+        :added_by => current_user.uid,
+        :content => params[:content] || quote.content,
+        :publication_uid => params[:publication] || quote.publication_uid,
+        :page_number => params[:pagenumber] || quote.page_number,
+        :links => params[:links] || quote.links,
+        :tags => build_tags || quote.tags
       }
 
-      call_use_case(:UpdateQuote, {:quote => input})
+      call_use_case(:update_quote, {:quote => input})
     end
 
-    def build_tags(tags)
-      return params[:tags].split(',').each(&:strip!) if params[:tags]
-      tags
+    def build_tags
+      params[:tags].split(',').each(&:strip!) if params[:tags]
     end
 
     def delete_quote
-      input = { :id => id }
+      input = { :uid => uid }
 
-      call_use_case(:DeleteQuote, input)
+      call_use_case(:delete_quote, input)
     end
 
-    def toggle_star
-      input = { :id => id }
-
-      call_use_case(:ToggleStar, input)
+    def get_publications
+      call_use_case(:get_publications).publications
     end
 
     def get_quotes
-      use_case  = Quotes::UseCases::GetQuotes.new
-      result    = use_case.call.quotes
-
-      return [] if result.empty?
-      result.reverse
+      call_use_case(:get_quotes).quotes
     end
 
     def get_tags
@@ -124,34 +121,17 @@ class ApplicationBase < Sinatra::Application
     def build_attributes(attributes)
       hash = Hash.new { |h, k| h[k] = 0}
 
-      attributes.inject { |last, attribute| hash[attribute] += 1; attribute}
-      # max_count = @max ||= hash.values.max
-      # hash.each { |k, v| hash[k] = build_relative_attribute_count(max_count, v) }
+      attributes.inject { |result, attribute| hash[attribute] += 1; result}
 
       hash.sort_by {|k, v| v}.reverse
     end
 
-    def build_relative_attribute_count(max, value)
-      result = (value/max.to_f)*5
-
-      result.round
+    def call_use_case(use_case, args = nil)
+      eval("Manager::Interface.#{use_case}(#{args})")
     end
 
-    def call_use_case(usecase, input)
-      use_case = Quotes::UseCases.const_get(usecase).new(input)
-
-      use_case.call
-    end
-
-    def use_case_type_of(result, type)
-      result = result.class.name.split('::').last.downcase
-
-      return true if result == type.downcase
-      false
-    end
-
-    def id
-      params[:id].to_i
+    def uid
+      params[:uid].to_i
     end
 
   end
@@ -165,11 +145,17 @@ class ApplicationBase < Sinatra::Application
     end
 
     def show_author_for(quote)
-      link_to "/author/#{quote.author}", quote.author unless params[:author]
+      author = quote.author
+
+      link_to "/author/#{author}", author unless params[:author]
     end
 
-    def show_title_for(quote)
-      link_to "/title/#{quote.title}", quote.title unless params[:title]
+    def show_publication_information_for(quote)
+      title = quote.title
+      page_information = " page #{quote.page_number}" if !quote.page_number.empty?
+
+
+      "#{link_to "/title/#{title}", title unless params[:title]} #{page_information}"
     end
 
     def display_relevant_count_for(quotes)
@@ -180,18 +166,18 @@ class ApplicationBase < Sinatra::Application
 
     def markdown(text)
       render_options = {
-        filter_html:     true,
-        hard_wrap:       true
+        filter_html: true,
+        hard_wrap: true
       }
       renderer = Redcarpet::Render::HTML.new(render_options)
 
       extensions = {
-        autolink:           true,
+        autolink: true,
         fenced_code_blocks: true,
-        lax_spacing:        true,
-        no_intra_emphasis:  true,
-        strikethrough:      true,
-        superscript:        true
+        lax_spacing: true,
+        no_intra_emphasis: true,
+        strikethrough: true,
+        superscript: true
       }
 
       Redcarpet::Markdown.new(renderer, extensions).render(text)

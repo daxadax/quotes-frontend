@@ -1,9 +1,7 @@
-.search
-  %form{ :action => '/search', :method => 'post'}
-    %img{:src => "/images/search.png", :class => 'search-image' }
+%ul.nav.navbar-nav
+  %form.navbar-form{:role => 'search',  :action => '/search', :method => 'post'}
+    %img{:src => "/images/search.png", :width => '25px' }
     %input{ :type => 'text',
             :name => 'search',
             :value => params[:search],
-            :class => 'search-field'}
-
-
+            :class => 'form-control'}
