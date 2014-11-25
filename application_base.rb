@@ -9,7 +9,7 @@ class ApplicationBase < Sinatra::Application
     end
 
     def publications
-      #cach for 60 seconds
+      #cache for 60 seconds
 
       @publications ||= get_publications
     end
