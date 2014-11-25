@@ -27,7 +27,7 @@ class QuotesApp < ApplicationBase
   get '/login' do
     form_page
 
-    haml :login
+    haml 'forms/login'.to_sym
   end
 
   post '/login' do
