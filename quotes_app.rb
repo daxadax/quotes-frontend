@@ -184,7 +184,7 @@ class QuotesApp < ApplicationBase
   end
 
   get '/author/:author' do
-    haml :index, :locals => {:quotes => quotes_by_author(params[:author])}
+    haml :quote_index, :locals => {:quotes => quotes_by_author(params[:author])}
   end
 
   get '/authors' do
@@ -195,7 +195,7 @@ class QuotesApp < ApplicationBase
   end
 
   get '/title/:title' do
-    haml :index, :locals => {:quotes => quotes_by_title(params[:title])}
+    haml :quote_index, :locals => {:quotes => quotes_by_title(params[:title])}
   end
 
   get '/titles' do
