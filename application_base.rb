@@ -24,6 +24,11 @@ class ApplicationBase < Sinatra::Application
       session[:current_user_uid].to_i
     end
 
+    def display_messages_and_reset_cache(&block)
+      session[:messages].each &block
+      session[:messages] = Array.new
+    end
+
     def search_results
       @search_results ||= build_search_results
     end

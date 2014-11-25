@@ -1,5 +1,3 @@
 .messages
-  -session[:messages].each do |msg|
+  - display_messages_and_reset_cache do |msg|
     %h2= msg
-
-  - clear_messages
