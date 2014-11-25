@@ -31,14 +31,52 @@ class QuotesApp < ApplicationBase
   end
 
   post '/login' do
+    auth_key = params[:nickname] + params[:password]
+
     result = call_use_case :authenticate_user,
       :nickname => params[:nickname],
-      :auth_key => params[:authkey]
+      :auth_key => auth_key
 
     if result.error
+      session[:messages] << 'Authentication failed'
+
       redirect '/login'
     else
-      session[:current_user] = result.user
+      session[:current_user_uid] = result.uid
+      session[:messages] << 'Authentication successful'
+
+      redirect '/'
+    end
+  end
+
+  get '/logout' do
+    session[:current_user_uid] = nil
+    session[:messages] << "You have been signed out"
+
+    redirect '/'
+  end
+
+  get '/new/user' do
+    form_page
+
+    haml 'forms/register'.to_sym
+  end
+
+  post '/new/user' do
+    email = params[:email].empty? ? 'no email added' : params[:email]
+    auth_key = params[:nickname] + params[:password]
+
+    result = call_use_case :create_user,
+      :nickname => params[:nickname],
+      :email => email,
+      :auth_key => auth_key
+
+    if result.error
+      session[:messages] << "Invalid input"
+      redirect '/new/user'
+    else
+      session[:current_user_uid] = result.uid
+      session[:messages] << "Registration successful"
       redirect '/'
     end
   end
