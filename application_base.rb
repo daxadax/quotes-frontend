@@ -43,6 +43,12 @@ class ApplicationBase < Sinatra::Application
       result.quote
     end
 
+    def publication_by_uid(uid)
+      result = call_use_case :get_publication, :uid => uid
+
+      result.publication
+    end
+
     def quotes_by_tag(tag)
      quotes.select {|quote| quote.tags.include?(tag)}
     end

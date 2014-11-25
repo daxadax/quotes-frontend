@@ -89,6 +89,12 @@ class QuotesApp < ApplicationBase
     haml :publication_index, :locals => {:publications => publications}
   end
 
+  get '/publication/:uid' do
+    haml :publication_index, :locals => {
+      :publications => [publication_by_uid(uid)]
+    }
+  end
+
   ######### end publications #########
 
   ######### start quotes #########
