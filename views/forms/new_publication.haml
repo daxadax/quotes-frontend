@@ -1,0 +1,22 @@
+%form.form-vertical{ :action => 'publication', :method => 'post', :role => 'form'}
+  %fieldset
+
+  %legend Create a new publication
+
+  .form-group
+    %label.control-label{:for => "author"} Author
+    %input.form-control{:name => "author", :type => 'text', :placeholder => 'required'}
+
+  .form-group
+    %label.control-label{:for => "title"} Title
+    %input.form-control{:name => 'title', :type => 'text', :placeholder => 'required'}
+
+  .form-group
+    %label.control-label{:for => "publisher"} Publisher
+    %input.form-control{:name => 'publisher', :type => 'text', :placeholder => 'required'}
+
+  .form-group
+    %label.control-label{:for => "year"} Year
+    %input.form-control{:name => 'year', :type => 'text', :placeholder => 'required'}
+
+  %button.btn.btn-primary{:type => 'submit'} Add Publisher

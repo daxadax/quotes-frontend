@@ -95,6 +95,25 @@ class QuotesApp < ApplicationBase
     }
   end
 
+  get '/new/publication' do
+    form_page
+
+    haml "forms/new_publication".to_sym
+  end
+
+  post '/new/publication' do
+    result = build_publication
+
+    if result.error
+      session[:messages] << "Invalid input"
+      redirect '/publication/new'
+    else
+      session[:messages] << "Publication created successfully"
+      redirect "/publication/#{result.uid}"
+    end
+  end
+
+
   ######### end publications #########
 
   ######### start quotes #########

@@ -71,6 +71,15 @@ class ApplicationBase < Sinatra::Application
       call_use_case(:search, input)
     end
 
+    def build_publication
+      call_use_case :create_publication, :publication => {
+        :author => params[:author],
+        :title => params[:title],
+        :publisher => params[:publisher],
+        :year => params[:year]
+      }
+    end
+
     def build_quote
       page_number = params[:pagenumber]  unless params[:pagenumber].empty?
       links = nil
