@@ -1,0 +1,5 @@
+.messages
+  -session[:messages].each do |msg|
+    %h2= msg
+
+  - clear_messages
