@@ -12,13 +12,13 @@
 
   .form-group
     %label.control-label{:for => "content"} Content
-    %textarea.form-control{:name => "content", :rows => 7}
+    %textarea.form-control{:name => "content", :rows => 7, :placeholder => 'required'}
 
   .form-group
     %label.control-label{:for => "pagenumber"} Page Number
     %input.form-control{:name => 'pagenumber',
                                   :type => 'text',
-                                  :placeholder => 'page number'}
+                                  :placeholder => 'required'}
 
   -# .form-group
   -#   %label.control-label{:for => "links"} Linked quotes
