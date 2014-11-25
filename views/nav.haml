@@ -1,5 +1,5 @@
 %ul.nav.navbar-nav
-  %li= link_to "/users/#{current_user.nickname}", current_user.nickname if current_user
+  %li= link_to '/logout', 'Logout' if current_user
   %li= link_to '/login', 'Login' unless current_user
   %li= link_to '/tags',  'Tags'
   %li.dropdown
