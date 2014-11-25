@@ -110,6 +110,12 @@ class ApplicationBase < Sinatra::Application
       call_use_case(:get_quotes).quotes
     end
 
+    def get_user(uid)
+      result = call_use_case(:get_user, :uid => uid)
+
+      return result.user unless result.error
+    end
+
     def get_tags
       @tags ||= build_attributes quotes.flat_map(&:tags)
     end
