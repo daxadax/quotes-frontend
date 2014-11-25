@@ -1,3 +1,5 @@
+enable :sessions
+
 class ApplicationBase < Sinatra::Application
 
     def quotes
