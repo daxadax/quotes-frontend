@@ -15,7 +15,13 @@ class ApplicationBase < Sinatra::Application
     end
 
     def current_user
-      false
+      return nil unless current_user_uid
+      get_user current_user_uid
+    end
+
+    def current_user_uid
+      return nil unless session[:current_user_uid]
+      session[:current_user_uid].to_i
     end
 
     def search_results
