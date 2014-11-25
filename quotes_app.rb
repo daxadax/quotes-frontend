@@ -138,10 +138,13 @@ class QuotesApp < ApplicationBase
 
   post '/new/quote' do
     result = build_quote
-    if use_case_type_of(result, 'Success')
-      redirect "/quote/#{result.uid}"
-    else
+
+    if result.error
+      session[:messages] << "Invalid input"
       redirect '/quote/new'
+    else
+      session[:messages] << "Quote created successfully"
+      redirect "/quote/#{result.uid}"
     end
   end
 

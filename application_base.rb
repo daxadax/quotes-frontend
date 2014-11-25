@@ -84,32 +84,30 @@ class ApplicationBase < Sinatra::Application
       page_number = params[:pagenumber]  unless params[:pagenumber].empty?
       links = nil
 
-      input = {
-        :added_by => current_user.uid,
-        :content => params[:content],
-        :publication_uid => params[:publication],
-        :page_number => page_number,
-        :tags => build_tags,
-        :links => links
-      }
-
-      call_use_case(:create_quote, {:quote => input})
+      call_use_case :create_quote,
+        :user_uid => current_user.uid,
+        :quote => {
+          :content => params[:content],
+          :publication_uid => params[:publication].to_i,
+          :page_number => page_number,
+          :tags => build_tags,
+          :links => links
+        }
     end
 
     def update_quote
       quote = quote_by_uid(uid)
 
-      input = {
-        :uid => uid,
-        :added_by => current_user.uid,
-        :content => params[:content] || quote.content,
-        :publication_uid => params[:publication] || quote.publication_uid,
-        :page_number => params[:pagenumber] || quote.page_number,
-        :links => params[:links] || quote.links,
-        :tags => build_tags || quote.tags
-      }
-
-      call_use_case(:update_quote, {:quote => input})
+      call_use_case :update_quote,
+        :user_uid => current_user.uid,
+        :quote => {
+           :uid => uid,
+           :content => params[:content] || quote.content,
+           :publication_uid => params[:publication].to_i || quote.publication_uid,
+           :page_number => params[:pagenumber] || quote.page_number,
+           :links => params[:links] || quote.links,
+           :tags => build_tags || quote.tags
+        }
     end
 
     def build_tags
