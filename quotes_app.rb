@@ -9,8 +9,8 @@ class QuotesApp < ApplicationBase
 
   post '/search' do
     results = search_results.quotes
-    tags    = search_results.tags
-    query   = search_results.query
+    tags = search_results.tags
+    query = search_results.query
 
     msg = "#{results.count} quotes"
     msg += " tagged #{tags.join(' and ')}" if tags.any?
