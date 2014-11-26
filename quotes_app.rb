@@ -16,9 +16,9 @@ class QuotesApp < ApplicationBase
     msg += " tagged #{tags.join(' and ')}" if tags.any?
     msg += " that include '#{query}'" unless query.empty?
 
+    session[:messages] << msg
     haml :quote_index, :locals => {
-      :quotes   => search_results.quotes,
-      :message  => msg
+      :quotes   => search_results.quotes
     }
   end
 
@@ -39,7 +39,6 @@ class QuotesApp < ApplicationBase
 
     if result.error
       session[:messages] << 'Authentication failed'
-
       redirect '/login'
     else
       session[:current_user_uid] = result.uid
