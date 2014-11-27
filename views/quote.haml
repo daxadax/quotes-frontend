@@ -1,11 +1,15 @@
+%h3.pull-left= show_publication_information_for quote
 .row
   %ul.pull-right.nav.navbar-nav
     %li= link_to "/edit/quote/#{quote.uid}", 'edit' if current_user_owns?(quote)
     %li= link_to "/delete/quote/#{quote.uid}", 'delete' if current_user_owns?(quote)
     %li= link_to "/quote/#{quote.uid}", 'permalink'
 
-%blockquote.clear
+%blockquote
   %p= markdown quote.content
-%ul.nav.navbar-nav
-  - quote.tags.each do |tag|
-    %li= link_to "/tag/#{tag}", tag
+
+%nav
+  %ul.nav.navbar-nav
+    %li.center-text.glyphicon.glyphicon-tags
+    - quote.tags.each do |tag|
+      %li= link_to "/tag/#{tag}", tag
