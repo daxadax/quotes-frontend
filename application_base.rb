@@ -19,6 +19,10 @@ class ApplicationBase < Sinatra::Application
       get_user current_user_uid
     end
 
+    def current_user_owns?(quote)
+      current_user.uid == quote.added_by ? true : false
+    end
+
     def current_user_uid
       return nil unless session[:current_user_uid]
       session[:current_user_uid].to_i

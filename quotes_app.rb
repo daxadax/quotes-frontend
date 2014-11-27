@@ -147,7 +147,7 @@ class QuotesApp < ApplicationBase
     end
   end
 
-  get 'quote/edit/:uid' do
+  get '/edit/quote/:uid' do
     form_page
 
     haml "forms/edit_quote".to_sym, :locals => {
@@ -155,19 +155,19 @@ class QuotesApp < ApplicationBase
     }
   end
 
-  post 'quote/edit/:uid' do
+  post '/edit/quote/:uid' do
     update_quote
 
     redirect "/quote/#{uid}"
   end
 
-  get 'quote/delete/:uid' do
+  get '/delete/quote/:uid' do
     form_page
 
     haml :confirm_delete, :locals => {:quote => quote_by_uid(uid)}
   end
 
-  post 'quote/delete/:uid' do
+  post '/delete/quote/:uid' do
     result = delete_quote
 
     if result != 0
