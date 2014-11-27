@@ -37,10 +37,6 @@ class ApplicationBase < Sinatra::Application
       @search_results ||= build_search_results
     end
 
-    def starred
-      quotes.select {|q| q.starred == true}
-    end
-
     def quote_by_uid(uid)
       result  = call_use_case :get_quote, :uid => uid
 
@@ -120,7 +116,6 @@ class ApplicationBase < Sinatra::Application
 
     def delete_quote
       input = { :uid => uid }
-
       call_use_case(:delete_quote, input)
     end
 
@@ -134,7 +129,6 @@ class ApplicationBase < Sinatra::Application
 
     def get_user(uid)
       result = call_use_case(:get_user, :uid => uid)
-
       return result.user unless result.error
     end
 
@@ -174,7 +168,7 @@ class ApplicationBase < Sinatra::Application
 
   helpers do
 
-    def link_to(url,text=url,opts={})
+    def link_to(url, text=url, opts={})
       attributes = ""
       opts.each { |key,value| attributes << key.to_s << "=\"" << value << "\" "}
       "<a href=\"#{url}\" #{attributes}>#{text}</a>"
@@ -182,14 +176,12 @@ class ApplicationBase < Sinatra::Application
 
     def show_author_for(quote)
       author = quote.author
-
       link_to "/author/#{author}", author unless params[:author]
     end
 
     def show_publication_information_for(quote)
       title = quote.title
       page_information = " page #{quote.page_number}" if !quote.page_number.empty?
-
 
       "#{link_to "/title/#{title}", title unless params[:title]} #{page_information}"
     end
