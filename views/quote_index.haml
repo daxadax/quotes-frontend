@@ -1,6 +1,4 @@
-.container
+%h2= display_relevant_count_for quotes
 
-  %h2= display_relevant_count_for quotes
-
-  -quotes.each do |quote|
-    = render :haml, :quote, :locals => { :quote => quote }
+-quotes.each do |quote|
+  .quote= render :haml, :quote, :locals => { :quote => quote }
