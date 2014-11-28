@@ -20,6 +20,7 @@ class ApplicationBase < Sinatra::Application
     end
 
     def current_user_owns?(quote)
+      return false unless current_user
       current_user.uid == quote.added_by ? true : false
     end
 
@@ -38,13 +39,13 @@ class ApplicationBase < Sinatra::Application
     end
 
     def quote_by_uid(uid)
-      result  = call_use_case :get_quote, :uid => uid
+      result  = call_use_case :get_quote, :uid => uid.to_i
 
       result.quote
     end
 
     def publication_by_uid(uid)
-      result = call_use_case :get_publication, :uid => uid
+      result = call_use_case :get_publication, :uid => uid.to_i
 
       result.publication
     end

@@ -1,4 +1,4 @@
-%form.form-vertical{ :action => 'quote', :method => 'post', :role => 'form'}
+%form.form-vertical{ :action => "/quote/edit/#{quote.uid}", :method => 'post', :role => 'form'}
   %fieldset
 
   %legend=  "Edit quote from #{quote.title} by #{quote.author}"
@@ -21,6 +21,7 @@
     %label.control-label{:for => "pagenumber"} Page Number
     %input.form-control{:name => 'pagenumber',
                                     :type => 'text',
+                                    :placeholder => 'required',
                                     :value => quote.page_number}
 
   -# .form-group
