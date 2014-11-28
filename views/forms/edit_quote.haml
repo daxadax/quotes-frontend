@@ -1,21 +1,38 @@
-#form
-  %form{ :action => 'edit', :method => 'post'}
-    .form-control
-      %input{:type => 'text', :name => 'author', :value => quote.author}
-      %input{:type => 'text', :name => 'title', :value => quote.title}
-      %label{:for => 'year'} Year:
-      %input{:type => 'text', :name => 'year', :value => quote.year}
-      %label{:for => 'publisher'} Publisher:
-      %input{:type => 'text', :name => 'publisher', :value => quote.publisher}
-      %label{:for => 'title'} Page Number:
-      %input{:type => 'text', :name => 'page_number', :value => quote.page_number}
-      %label{:for => 'content'} Content:
-      %textarea{:name => 'content'}
-      =quote.content
-      %label{:for => 'tags'} Tags:
-      %input{:type => 'text', :name => 'tags', :value => quote.tags.join(', ')}
+%form.form-vertical{ :action => 'quote', :method => 'post', :role => 'form'}
+  %fieldset
 
-      %label{:for => 'links'} Linked with:
-      = render :haml, :display_links, :locals => { :quote => quote }
+  %legend=  "Edit quote from #{quote.title} by #{quote.author}"
 
-      %input{:type => 'submit', :value => 'Update values'}
+  .form-group
+    %label.control-label.sr-only{:for => 'publication'} Select publication
+    %select.form-control{:name => 'publication'}
+      %option{:value => quote.publication_uid}= quote.title
+      -publications.each do |publication|
+        - unless publication.title == quote.title
+          %option{:value => publication.uid}= publication.title
+
+  .form-group
+    %label.control-label{:for => "content"} Content
+    %textarea.form-control{:name => "content",
+                                          :rows => 7}
+      = quote.content
+
+  .form-group
+    %label.control-label{:for => "pagenumber"} Page Number
+    %input.form-control{:name => 'pagenumber',
+                                    :type => 'text',
+                                    :value => quote.page_number}
+
+  -# .form-group
+  -#   %label.control-label{:for => "links"} Linked quotes
+  -#   %search.form-control{:name => "links",
+  -#                                 :type => "search",
+  -#                                 :placeholder => "search for linked quotes"}
+
+  .form-group
+    %label.control-label{:for => "tags"} Tags
+    %input.form-control{:name => 'tags',
+                                    :type => 'text',
+                                    :value => quote.tags.join(', ')}
+
+  %button.btn.btn-primary{:type => 'submit'} Update Quote
