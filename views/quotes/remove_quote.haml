@@ -1,0 +1,9 @@
+%p You are about to remove the following quote:
+
+%h4= "#{quote.title} by #{quote.author}:"
+
+= quote.content
+
+%form{ :action => "/quote/delete/#{quote.uid}", :method => 'post'}
+  %input{:type => 'submit', :value => 'Confirm delete', :class => 'button'}
+  = "or #{link_to "/quote/#{quote.uid}", 'cancel', {:class => 'button'}}"

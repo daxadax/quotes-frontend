@@ -1,4 +1,4 @@
 %h2= display_relevant_count_for quotes
 
 -quotes.each do |quote|
-  .quote= render :haml, :quote, :locals => { :quote => quote }
+  .quote= display_page(quote_partial, :quote => quote)

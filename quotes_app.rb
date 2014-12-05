@@ -4,7 +4,7 @@ require './application_base'
 class QuotesApp < ApplicationBase
 
   get '/' do
-    haml :quote_index, :locals => {:quotes => [quotes.sample]}
+    display_page quotes_path, :quotes => [quotes.sample]
   end
 
   post '/search' do
@@ -17,17 +17,13 @@ class QuotesApp < ApplicationBase
     msg += " that include '#{query}'" unless query.empty?
 
     session[:messages] << msg
-    haml :quote_index, :locals => {
-      :quotes   => search_results.quotes
-    }
+    display_page quotes_path, :quotes => search_results.quotes
   end
 
   ######### start users #########
 
   get '/login' do
-    form_page
-
-    haml 'forms/login'.to_sym
+    display_page login_path, :form_page => true
   end
 
   post '/login' do
@@ -35,11 +31,13 @@ class QuotesApp < ApplicationBase
 
     result = call_use_case :authenticate_user,
       :nickname => params[:nickname],
-      :auth_key => auth_key
+      :auth_key => auth_key,
+      :login_data => {
+        :ip_address => 'how to get the ip in sinatra?'
+      }
 
     if result.error
-      session[:messages] << 'Authentication failed'
-      redirect '/login'
+      handle_login_error(result.error)
     else
       session[:current_user_uid] = result.uid
       session[:messages] << 'Authentication successful'
@@ -56,9 +54,7 @@ class QuotesApp < ApplicationBase
   end
 
   get '/user/new' do
-    form_page
-
-    haml 'forms/register'.to_sym
+    display_page registration_path, :form_page => true
   end
 
   post '/user/new' do
@@ -72,7 +68,7 @@ class QuotesApp < ApplicationBase
 
     if result.error
       session[:messages] << "Invalid input"
-      redirect '/new/user'
+      redirect '/user/new'
     else
       session[:current_user_uid] = result.uid
       session[:messages] << "Registration successful"
@@ -80,24 +76,27 @@ class QuotesApp < ApplicationBase
     end
   end
 
+  get '/user/:uid/added/quotes' do
+    quotes = quotes_by_user uid
+
+    session[:messages] << "You haven't added any quotes!" if quotes.empty?
+    display_page quotes_path, :quotes => quotes
+  end
+
   ######### end users #########
 
   ######### start publications #########
 
   get '/publications' do
-    haml :publication_index, :locals => {:publications => publications}
+    display_page publications_path, :publications => publications
   end
 
   get %r{/publication/([\d]+)} do |uid|
-    haml :publication_index, :locals => {
-      :publications => [publication_by_uid(uid)]
-    }
+    display_page publications_path, :publications => [publication_by_uid(uid)]
   end
 
   get '/publication/new' do
-    form_page
-
-    haml "forms/new_publication".to_sym
+    display_page new_publication_path, :form_page => true
   end
 
   post '/publication/new' do
@@ -112,29 +111,29 @@ class QuotesApp < ApplicationBase
     end
   end
 
+  get '/user/:uid/added/publications' do
+    publications = publications_by_user uid
+
+    session[:messages] << "You haven't added any publications!" if publications.empty?
+    display_page publications_path, :publications => publications
+  end
 
   ######### end publications #########
 
   ######### start quotes #########
 
   get %r{/quote/([\d]+)} do |uid|
-    haml :quote_index, :locals => {
-      :quotes => [ quote_by_uid(uid) ]
-    }
+    display_page quotes_path, :quotes => [ quote_by_uid(uid) ]
   end
 
   get '/quotes' do
-    haml :quote_index, :locals => {
-      :quotes => quotes
-    }
+    display_page quotes_path, :quotes => quotes
   end
 
   get '/quote/new' do
-    form_page
-
-    haml "forms/new_quote".to_sym, :locals => {
+    display_page new_quote_path,
+      :form_page => true,
       :publications => publications
-    }
   end
 
   post '/quote/new' do
@@ -150,23 +149,20 @@ class QuotesApp < ApplicationBase
   end
 
   get '/quote/edit/:uid' do
-    form_page
-
-    haml "forms/edit_quote".to_sym, :locals => {
-      :quote  => quote_by_uid(uid)
-    }
+    display_page edit_quote_path,
+      :form_page => true,
+      :quote => quote_by_uid(uid)
   end
 
   post '/quote/edit/:uid' do
     result = update_quote
-
     redirect "/quote/#{uid}"
   end
 
   get '/quote/delete/:uid' do
-    form_page
-
-    haml :confirm_delete, :locals => {:quote => quote_by_uid(uid)}
+    display_page :confirm_delete,
+      :form_page => true,
+      :quote => quote_by_uid(uid)
   end
 
   post '/quote/delete/:uid' do
@@ -185,36 +181,33 @@ class QuotesApp < ApplicationBase
   ######### end quotes #########
 
   get '/tag/:tag' do
-    haml :quote_index, :locals => {:quotes => quotes_by_tag(params[:tag])}
+    display_page quotes_path, :quotes => quotes_by_tag(params[:tag])
   end
 
   get '/tags' do
-    haml :attribute_index, :locals => {
+    display_page :attribute_index,
       :attributes => get_tags,
       :kind => 'tag'
-    }
   end
 
   get '/author/:author' do
-    haml :quote_index, :locals => {:quotes => quotes_by_author(params[:author])}
+    display_page quotes_path, :quotes => quotes_by_author(params[:author])
   end
 
   get '/authors' do
-    haml :attribute_index, :locals => {
+    display_page :attribute_index,
       :attributes => get_authors,
       :kind => 'author'
-    }
   end
 
   get '/title/:title' do
-    haml :quote_index, :locals => {:quotes => quotes_by_title(params[:title])}
+    display_page quotes_path, :quotes => quotes_by_title(params[:title])
   end
 
   get '/titles' do
-    haml :attribute_index, :locals => {
+    display_page :attribute_index,
       :attributes => get_titles,
       :kind => 'title'
-    }
   end
 
   get '/toggle_star' do

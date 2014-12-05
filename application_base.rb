@@ -16,7 +16,7 @@ class ApplicationBase < Sinatra::Application
 
     def current_user
       return nil unless current_user_uid
-      get_user current_user_uid
+      @curent_user ||= get_user(current_user_uid)
     end
 
     def current_user_owns?(quote)
@@ -27,6 +27,58 @@ class ApplicationBase < Sinatra::Application
     def current_user_uid
       return nil unless session[:current_user_uid]
       session[:current_user_uid].to_i
+    end
+
+    def registration_path
+      'users/register'
+    end
+
+    def login_path
+      'users/login'
+    end
+
+    def publications_path
+      'publications/index'
+    end
+
+    def new_publication_path
+      'publications/new'
+    end
+
+    def publication_partial
+      'publications/publication'
+    end
+
+    def quotes_path
+      'quotes/index'
+    end
+
+    def new_quote_path
+      'quotes/new'
+    end
+
+    def edit_quote_path
+      'quotes/edit'
+    end
+
+    def quote_partial
+      'quotes/quote'
+    end
+
+    def user_quotes_path(user = current_user)
+      "/user/#{user.uid}/added/quotes"
+    end
+
+    def user_publications_path(user = current_user)
+      "/user/#{user.uid}/added/publications"
+    end
+
+    def handle_login_error(error)
+      msg = "No user with that nickname is registered" if error == :user_not_found
+      msg = "The password you entererd isn't right" if error == :auth_failure
+
+      session[:messages] << msg
+      redirect '/login'
     end
 
     def display_messages_and_reset_cache(&block)
@@ -50,6 +102,14 @@ class ApplicationBase < Sinatra::Application
       result.publication
     end
 
+    def publications_by_user(uid)
+      publications.select { |publication| publication.added_by == uid}
+    end
+
+    def quotes_by_user(uid)
+      quotes.select { |quote| quote.added_by == uid}
+    end
+
     def quotes_by_tag(tag)
      quotes.select {|quote| quote.tags.include?(tag)}
     end
@@ -62,10 +122,6 @@ class ApplicationBase < Sinatra::Application
       quotes.select { |quote| quote.title == title }
     end
 
-    def form_page
-      @form_page = true
-    end
-
     def build_search_results
       input = { :query => params[:search] }
 
@@ -73,12 +129,14 @@ class ApplicationBase < Sinatra::Application
     end
 
     def build_publication
-      call_use_case :create_publication, :publication => {
-        :author => params[:author],
-        :title => params[:title],
-        :publisher => params[:publisher],
-        :year => params[:year]
-      }
+      call_use_case :create_publication,
+        :user_uid => current_user_uid,
+        :publication => {
+          :author => params[:author],
+          :title => params[:title],
+          :publisher => params[:publisher],
+          :year => params[:year]
+        }
     end
 
     def build_quote
@@ -86,7 +144,7 @@ class ApplicationBase < Sinatra::Application
       links = nil
 
       call_use_case :create_quote,
-        :user_uid => current_user.uid,
+        :user_uid => current_user_uid,
         :quote => {
           :content => params[:content],
           :publication_uid => params[:publication].to_i,
@@ -103,9 +161,10 @@ class ApplicationBase < Sinatra::Application
         :user_uid => current_user.uid,
         :quote => {
            :uid => uid,
+           :added_by => quote.added_by,
            :content => params[:content] || quote.content,
            :publication_uid => params[:publication].to_i || quote.publication_uid,
-           :page_number => params[:pagenumber] || quote.page_number,
+           :page_number => params[:pagenumber].to_i || quote.page_number,
            :links => params[:links] || quote.links,
            :tags => build_tags || quote.tags
         }
@@ -155,6 +214,11 @@ class ApplicationBase < Sinatra::Application
       attributes.inject { |result, attribute| hash[attribute] += 1; result}
 
       hash.sort_by {|k, v| v}.reverse
+    end
+
+    def display_page(location, locals = {})
+      @form_page = !locals.delete(:form_page).nil?
+      haml location.to_sym, :locals => locals
     end
 
     def call_use_case(use_case, args = nil)
