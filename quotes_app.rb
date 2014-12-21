@@ -252,19 +252,9 @@ class QuotesApp < ApplicationBase
       :kind => 'author'
   end
 
-  get '/title/:title' do
-    display_page quotes_path, :quotes => quotes_by_title(params[:title])
-  end
-
-  get '/titles' do
-    display_page :attribute_index,
-      :attributes => get_titles,
-      :kind => 'title'
-  end
-
-  get '/toggle_star' do
-    toggle_star
-    render :haml, :star, :layout => nil, :locals => { :quote => quote_by_uid(uid) }
+  get '/toggle_star/:uid' do |uid|
+    toggle_star(uid)
+    nil
   end
 
 end
