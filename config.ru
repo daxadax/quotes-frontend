@@ -12,6 +12,9 @@ Bundler.require
 
 require './quotes_app'
 
+enable :sessions
+set :session_secret, 'not the real secret'
+
 ENV['DATABASE_URL'] = 'mysql2://dax:dax@localhost/quotes_production'
 
 run QuotesApp

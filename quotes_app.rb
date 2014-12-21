@@ -16,8 +16,8 @@ class QuotesApp < ApplicationBase
     msg += " tagged #{tags.join(' and ')}" if tags.any?
     msg += " that include '#{query}'" unless query.empty?
 
-    session[:messages] << msg
-    display_page quotes_path, :quotes => search_results.quotes
+    messages << msg
+    display_page quotes_path, :quotes => result.quotes
   end
 
   ######### start users #########
@@ -40,7 +40,7 @@ class QuotesApp < ApplicationBase
       handle_login_error(result.error)
     else
       session[:current_user_uid] = result.uid
-      session[:messages] << 'Authentication successful'
+      messages << 'Authentication successful'
 
       redirect '/'
     end
@@ -48,7 +48,7 @@ class QuotesApp < ApplicationBase
 
   get '/logout' do
     session[:current_user_uid] = nil
-    session[:messages] << "You have been signed out"
+    messages << "You have been signed out"
 
     redirect '/'
   end
@@ -67,11 +67,11 @@ class QuotesApp < ApplicationBase
       :auth_key => auth_key
 
     if result.error
-      session[:messages] << "Invalid input"
+      messages << "Invalid input"
       redirect '/user/new'
     else
       session[:current_user_uid] = result.uid
-      session[:messages] << "Registration successful"
+      messages << "Registration successful"
       redirect '/'
     end
   end
@@ -79,10 +79,25 @@ class QuotesApp < ApplicationBase
   get '/user/:uid/added/quotes' do
     quotes = quotes_by_user uid
 
-    session[:messages] << "You haven't added any quotes!" if quotes.empty?
+    messages << "You haven't added any quotes!" if quotes.empty?
     display_page quotes_path, :quotes => quotes
   end
 
+
+    messages << "You haven't added any publications!" if publications.empty?
+    display_page publications_path, :publications => publications
+    if quotes.empty?
+      messages << "You haven't added any quotes!"
+    else
+      messages << "#{quotes.size} quotes with no tags"
+    end
+
+    if quotes.empty?
+      messages << "You haven't marked any favorite quotes!"
+    else
+      messages << "#{quotes.size} favorite quotes"
+    end
+    messages << "You haven't tagged any quotes!" if tags.empty?
   ######### end users #########
 
   ######### start publications #########
@@ -140,10 +155,10 @@ class QuotesApp < ApplicationBase
     result = build_quote
 
     if result.error
-      session[:messages] << "Invalid input"
+      messages << "Invalid input"
       redirect '/quote/new'
     else
-      session[:messages] << "Quote created successfully"
+      messages << "Quote created successfully"
       redirect "/quote/#{result.uid}"
     end
   end
@@ -168,13 +183,13 @@ class QuotesApp < ApplicationBase
   post '/quote/delete/:uid' do
     result = delete_quote
 
-    if result != 0
-      msg = "Quote with ID ##{uid} has been deleted"
-    else
+    if result.error
       msg = "Something went wrong.  Quote with ID #{uid} was not deleted"
+    else
+      msg = "Quote with ID ##{uid} has been deleted"
     end
 
-    session[:messages] << msg
+    messages << msg
     redirect '/'
   end
 

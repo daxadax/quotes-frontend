@@ -1,5 +1,3 @@
-enable :sessions
-
 class ApplicationBase < Sinatra::Application
 
     def quotes
@@ -61,33 +59,67 @@ class ApplicationBase < Sinatra::Application
       'quotes/edit'
     end
 
+    def remove_quote_path
+      'quotes/remove'
+    end
+
     def quote_partial
       'quotes/quote'
     end
 
-    def user_quotes_path(user = current_user)
-      "/user/#{user.uid}/added/quotes"
+    def user_profile_path(uid = nil)
+      uid ||= current_user.uid
+
+      "/user/#{uid}"
     end
 
-    def user_publications_path(user = current_user)
-      "/user/#{user.uid}/added/publications"
+    def user_partial
+      '/users/user'
+    end
+
+    def user_quotes_path(uid, limit = nil)
+      limit = "?limit=#{limit}" if limit
+
+      "/user/#{uid}/added/quotes" + limit.to_s
+    end
+
+    def user_publications_path(uid, limit = nil)
+      limit = "?limit=#{limit}" if limit
+
+      "/user/#{uid}/added/publications" + limit.to_s
+    end
+
+    def favorite_quotes_path(uid, limit = nil)
+      limit = "?limit=#{limit}" if limit
+
+      "/user/#{uid}/favorites" + limit.to_s
+    end
+
+    def user_tags_path(uid, limit = nil)
+      limit = "?limit=#{limit}" if limit
+
+      "/user/#{uid}/tags" + limit.to_s
+    end
+
+    def untagged_quotes_path
+      "/user/#{current_user_uid}/untagged"
     end
 
     def handle_login_error(error)
       msg = "No user with that nickname is registered" if error == :user_not_found
       msg = "The password you entererd isn't right" if error == :auth_failure
 
-      session[:messages] << msg
+      messages << msg
       redirect '/login'
     end
 
     def display_messages_and_reset_cache(&block)
-      session[:messages].each &block
-      session[:messages] = Array.new
+      messages.each &block
+      messages.clear
     end
 
-    def search_results
-      @search_results ||= build_search_results
+    def messages
+      session[:messages] ||= Array.new
     end
 
     def quote_by_uid(uid)

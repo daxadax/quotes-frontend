@@ -12,7 +12,7 @@
       =render :haml, :header
   #content
     .container
-      = render :haml, :messages if session[:messages]
+      = render :haml, :messages if messages.any?
       = yield
 
   %script{:src => '/javascript/jquery2.1.1.min.js'}
