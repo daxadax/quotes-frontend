@@ -10,6 +10,7 @@ require 'quotes'
 
 Bundler.require
 
+Dir.glob('./helpers/*.rb') { |f| require f }
 require './quotes_app'
 
 enable :sessions
