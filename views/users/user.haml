@@ -1,0 +1,23 @@
+.row
+  %h2= user.nickname
+  %h4= user.email
+
+.user-profile-boxes
+  .row
+    .profile-box.col-md-4
+      = display_widget :path => user_tags_path(user.uid, 10), :title => "Top tags"
+    .profile-box.col-md-8
+      = display_widget :path => user_publications_path(user.uid, 5),
+        :title => "Added #{user.added_publications.size} publications, showing five most recent #{link_to(user_publications_path(user.uid), "See all")}"
+
+  .profile-box
+    = display_widget :path => user_quotes_path(user.uid, 1),
+      :title => "Added #{user.added_quotes.size} quotes, showing most recent #{link_to(user_quotes_path(user.uid), "See all")}"
+
+  .profile-box
+    = display_widget :path => favorite_quotes_path(user.uid, 1),
+      :title => "#{user.favorites.size} favorite quotes #{link_to(favorite_quotes_path(user.uid), "See all")}"
+
+- if user.uid == current_user_uid
+  Last login
+  = "#{Time.at(user.last_login_time)} from #{user.last_login_address}"

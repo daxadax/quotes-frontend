@@ -155,27 +155,39 @@ class ApplicationBase < Sinatra::Application
       quotes.select { |quote| quote.title == title }
     end
 
+    def favorite_quotes_for_user(uid)
+      user = get_user(uid)
 
+      quotes.select { |quote| user.favorites.include?(quote.uid) }
     end
 
     end
 
     end
 
+    def untagged_quotes_for_user(uid)
+      quotes = quotes_by_user(uid)
 
+      quotes.select {|q| q.tags.empty?}
     end
 
     end
 
     end
 
+    def display_page(location, locals = {})
+      @form_page = !locals.delete(:form_page).nil?
+      haml location.to_sym, :locals => locals
     end
 
+    def display_widget(locals = {})
+      display_page 'widget', locals\
     end
 
+    def get_tags(user_uid = nil)
+      used_quotes = user_uid ?  quotes_by_user(user_uid) : quotes
 
-    def get_tags
-      @tags ||= build_attributes quotes.flat_map(&:tags)
+      @tags ||= build_attributes used_quotes.flat_map(&:tags)
     end
 
     def get_top_tags
@@ -223,11 +235,23 @@ class ApplicationBase < Sinatra::Application
       link_to "/author/#{author}", author unless params[:author]
     end
 
-    def show_publication_information_for(quote)
-      title = quote.title
-      page_information = " page #{quote.page_number}" if !quote.page_number.empty?
+    def show_title_for(object)
+      uid = publication_uid_for object
+      title = object.title
 
-      "#{link_to "/title/#{title}", title unless params[:title]} #{page_information}"
+      link_to "/publication/#{uid}", title
+    end
+
+    def show_author_for(object)
+      uid = publication_uid_for object
+      author = object.author
+
+      link_to "/authors/#{author}", author
+    end
+
+    def determine_favorite_class(quote_uid)
+      return ' ' unless current_user
+      current_user.favorites.include?(quote_uid) ? 'favorite' : ''
     end
 
     def display_relevant_count_for(quotes)

@@ -76,28 +76,61 @@ class QuotesApp < ApplicationBase
     end
   end
 
+  get '/user/:uid' do
+    user = get_user(uid)
+
+    display_page user_partial, :user => user
+  end
+
   get '/user/:uid/added/quotes' do
     quotes = quotes_by_user uid
+    quotes = quotes.first(params[:limit].to_i) if params[:limit]
 
     messages << "You haven't added any quotes!" if quotes.empty?
     display_page quotes_path, :quotes => quotes
   end
 
+  get '/user/:uid/added/publications' do
+    publications = publications_by_user uid
+    publications = publications.first(params[:limit].to_i) if params[:limit]
 
     messages << "You haven't added any publications!" if publications.empty?
     display_page publications_path, :publications => publications
+  end
+
+  get '/user/:uid/untagged' do
+    quotes = untagged_quotes_for_user uid
+
     if quotes.empty?
       messages << "You haven't added any quotes!"
     else
       messages << "#{quotes.size} quotes with no tags"
     end
 
+    display_page quotes_path, :quotes => quotes
+  end
+
+  get '/user/:uid/favorites' do
+    quotes = favorite_quotes_for_user uid
+    quotes = quotes.first(params[:limit].to_i) if params[:limit]
+
     if quotes.empty?
       messages << "You haven't marked any favorite quotes!"
     else
       messages << "#{quotes.size} favorite quotes"
     end
+
+    display_page quotes_path, :quotes => quotes
+  end
+
+  get '/user/:uid/tags' do
+    tags = get_tags(uid)
+    tags = tags.first(params[:limit].to_i) if params[:limit]
+
     messages << "You haven't tagged any quotes!" if tags.empty?
+    display_page :attribute_index, :attributes => tags, :kind => 'tag'
+  end
+
   ######### end users #########
 
   ######### start publications #########
