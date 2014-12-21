@@ -1,0 +1,22 @@
+%form.form-vertical{ :action => "/publication/edit/#{publication.uid}", :method => 'post', :role => 'form'}
+  %fieldset
+
+  %legend= "Edit #{publication.title} by #{publication.author}"
+
+  .form-group
+    %label.control-label{:for => "author"} Author
+    %input.form-control{:name => "author", :type => 'text', :value => publication.author}
+
+  .form-group
+    %label.control-label{:for => "title"} Title
+    %input.form-control{:name => 'title', :type => 'text', :value => publication.title}
+
+  .form-group
+    %label.control-label{:for => "publisher"} Publisher
+    %input.form-control{:name => 'publisher', :type => 'text', :value => publication.publisher}
+
+  .form-group
+    %label.control-label{:for => "year"} Year
+    %input.form-control{:name => 'year', :type => 'text', :value => publication.year}
+
+  %button.btn.btn-primary{:type => 'submit'} Update Publication

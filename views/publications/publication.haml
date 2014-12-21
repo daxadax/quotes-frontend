@@ -1,15 +1,20 @@
-.row
-  .col-xs-10
-  .btn-group.col-xs-2
-    %button.btn.btn-primary.dropdown-toggle{:type => 'button', :data =>{:toggle => 'dropdown'}}
-      Options
-      %span.caret
-    %ul.dropdown-menu
-      %li=link_to '#', 'edit'
-      %li=link_to '#', 'delete'
-      %li=link_to "/publication/#{publication.uid}", 'permalink'
+.publication-container.clear
 
-  .quote-title.col-xs-10= publication.title
-  .quote-title.col-xs-10= publication.author
-  .quote-title.col-xs-10= publication.publisher
-  .quote-title.col-xs-10= publication.year
+  .publication
+    .title
+      = show_title_for publication
+      .publication-btn.btn-group
+        .dropdown-toggle{:type => 'button',
+          :data =>{:toggle => 'dropdown'}}
+          %span.glyphicon.glyphicon-cog{:aria => {:hidden => true}}
+        %ul.dropdown-menu
+          %li=link_to "/publication/edit/#{publication.uid}", 'edit'
+          %li=link_to '#', 'delete'
+          %li=link_to "/publication/#{publication.uid}", 'permalink'
+    .publication-info
+      .author.pull-left
+        Author:
+        = show_author_for publication
+      .publisher.pull-left
+        Publisher:
+        = "#{publication.publisher} (#{publication.year})"

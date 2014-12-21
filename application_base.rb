@@ -4,13 +4,13 @@ class ApplicationBase < Sinatra::Application
     def quotes
       #cache for 60 seconds
 
-      @quotes ||= get_quotes
+      get_quotes
     end
 
     def publications
       #cache for 60 seconds
 
-      @publications ||= get_publications
+      get_publications
     end
 
     def current_user
@@ -42,6 +42,10 @@ class ApplicationBase < Sinatra::Application
 
     def new_publication_path
       'publications/new'
+    end
+
+    def edit_publication_path
+      'publications/edit'
     end
 
     def publication_partial
@@ -136,23 +140,11 @@ class ApplicationBase < Sinatra::Application
     end
 
     def publications_by_user(uid)
-      publications.select { |publication| publication.added_by == uid}
+      publications.select { |publication| publication.added_by == uid }
     end
 
     def quotes_by_user(uid)
-      quotes.select { |quote| quote.added_by == uid}
-    end
-
-    def quotes_by_tag(tag)
-     quotes.select {|quote| quote.tags.include?(tag)}
-    end
-
-    def quotes_by_author(author)
-      quotes.select { |quote| quote.author == author}
-    end
-
-    def quotes_by_title(title)
-      quotes.select { |quote| quote.title == title }
+      quotes.select { |quote| quote.added_by == uid }
     end
 
     def favorite_quotes_for_user(uid)
@@ -161,8 +153,12 @@ class ApplicationBase < Sinatra::Application
       quotes.select { |quote| user.favorites.include?(quote.uid) }
     end
 
+    def quotes_by_publication(publication_uid)
+      quotes.select { |quote| quote.publication_uid == publication_uid.to_i }
     end
 
+    def quotes_by_tag(tag)
+     quotes.select {|quote| quote.tags.include?(tag)}
     end
 
     def untagged_quotes_for_user(uid)
@@ -171,8 +167,12 @@ class ApplicationBase < Sinatra::Application
       quotes.select {|q| q.tags.empty?}
     end
 
+    def quotes_by_author(author)
+      quotes.select { |quote| quote.author == author}
     end
 
+    def quotes_by_title(title)
+      quotes.select { |quote| quote.title == title }
     end
 
     def display_page(location, locals = {})
@@ -209,11 +209,11 @@ class ApplicationBase < Sinatra::Application
       hash.sort_by {|k, v| v}.reverse
     end
 
-    def display_page(location, locals = {})
-      @form_page = !locals.delete(:form_page).nil?
-      haml location.to_sym, :locals => locals
-    end
+    def publication_uid_for(object)
+      type = object.class.name.split('::').last
 
+      return object.publication_uid if type == 'Quote'
+      object.uid
     end
 
     def uid

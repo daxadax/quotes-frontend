@@ -8,11 +8,11 @@ class QuotesApp < ApplicationBase
   end
 
   post '/search' do
-    results = search_results.quotes
-    tags = search_results.tags
-    query = search_results.query
+    result = build_search_results
+    tags = result.tags
+    query = result.query
 
-    msg = "#{results.count} quotes"
+    msg = "#{result.quotes.count} quotes"
     msg += " tagged #{tags.join(' and ')}" if tags.any?
     msg += " that include '#{query}'" unless query.empty?
 
@@ -33,7 +33,7 @@ class QuotesApp < ApplicationBase
       :nickname => params[:nickname],
       :auth_key => auth_key,
       :login_data => {
-        :ip_address => 'how to get the ip in sinatra?'
+        :ip_address => request.ip
       }
 
     if result.error
@@ -140,7 +140,7 @@ class QuotesApp < ApplicationBase
   end
 
   get %r{/publication/([\d]+)} do |uid|
-    display_page publications_path, :publications => [publication_by_uid(uid)]
+    display_page quotes_path, :quotes => quotes_by_publication(uid)
   end
 
   get '/publication/new' do
@@ -151,19 +151,23 @@ class QuotesApp < ApplicationBase
     result = build_publication
 
     if result.error
-      session[:messages] << "Invalid input"
+      messages << "Invalid input"
       redirect '/publication/new'
     else
-      session[:messages] << "Publication created successfully"
+      messages << "Publication created successfully"
       redirect "/publication/#{result.uid}"
     end
   end
 
-  get '/user/:uid/added/publications' do
-    publications = publications_by_user uid
+  get '/publication/edit/:uid' do
+    display_page edit_publication_path,
+      :form_page => true,
+      :publication => publication_by_uid(uid)
+  end
 
-    session[:messages] << "You haven't added any publications!" if publications.empty?
-    display_page publications_path, :publications => publications
+  post '/publication/edit/:uid' do
+    result = update_publication
+    redirect "/publication/#{uid}"
   end
 
   ######### end publications #########

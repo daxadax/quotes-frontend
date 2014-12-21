@@ -1,4 +1,4 @@
 .confirm-delete
   %h4 Are you sure?
 
-  = render '/views/quotes/remove_quote', :locals => {:quote => quote}
+  = display_page remove_quote_path, :quote => quote
