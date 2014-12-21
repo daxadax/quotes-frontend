@@ -1,5 +1,9 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'sass/plugin/rack'
+
+Sass::Plugin.options[:style] = :compressed		
+use Sass::Plugin::Rack
 
 require 'users'
 require 'quotes'
