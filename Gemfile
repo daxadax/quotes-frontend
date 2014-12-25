@@ -11,7 +11,9 @@ gem 'quotes', :path => '../quotes_backend'
 gem 'persistence', :path => '../persistence'
 
 group :development do
-
   gem 'shotgun'
-
+  gem 'rack-test'
+  gem 'capybara'
+  gem 'minitest'
+  gem 'minitest-capybara'
 end
