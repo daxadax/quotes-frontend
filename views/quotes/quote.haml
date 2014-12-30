@@ -1,19 +1,20 @@
-.quote-info
-  .glyphicon.glyphicon-star.star{:class => determine_favorite_class(quote.uid),
-                                                  :data => {:uid => quote.uid,
-                                                                  :current_user => current_user_uid}}
-  %ul.nav.navbar-nav.pull-right
-    - if current_user_owns?(quote)
-      %li= link_to "/quote/edit/#{quote.uid}", 'edit'
-      %li= link_to "/quote/delete/#{quote.uid}", 'delete'
-    %li= link_to "/quote/#{quote.uid}", 'permalink'
+.quote.clear
+  .quote-info
+    .glyphicon.glyphicon-star.star{:class => determine_favorite_class(quote.uid),
+                                                    :data => {:uid => quote.uid,
+                                                                    :current_user => current_user_uid}}
+    %ul.nav.navbar-nav.pull-right
+      - if current_user_owns?(quote)
+        %li= link_to "/quote/edit/#{quote.uid}", 'edit'
+        %li= link_to "/quote/delete/#{quote.uid}", 'delete'
+      %li= link_to "/quote/#{quote.uid}", 'permalink'
 
-%blockquote.clear= markdown quote.content
+  %blockquote.clear= markdown quote.content
 
-- if quote.tags.any?
-  %ul.nav.navbar-nav.tags
-    %li.center-text.glyphicon.glyphicon-tags
-    - quote.tags.each do |tag|
-      %li= link_to "/tag/#{tag}", tag
+  - if quote.tags.any?
+    %ul.nav.navbar-nav.tags
+      %li.center-text.glyphicon.glyphicon-tags
+      - quote.tags.each do |tag|
+        %li= link_to "/tag/#{tag}", tag
 
-.clear
+  .clear

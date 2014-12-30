@@ -1,3 +1,7 @@
+-# publications: a collection of all publications in the database
+-# tags: a collection of all tags in the database
+-# quote: the quote being editted
+
 %form.form-vertical{ :action => "/quote/edit/#{quote.uid}", :method => 'post', :role => 'form'}
   %fieldset
 
@@ -32,7 +36,8 @@
 
   .form-group
     %label.control-label{:for => "tags"} Tags
-    %input.form-control{:name => 'tags',
+    #tag-data{:data => {:tags => tags}}
+    %input#tags-input.form-control{:name => 'tags',
                                     :type => 'text',
                                     :value => quote.tags.join(', ')}
 

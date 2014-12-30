@@ -120,15 +120,13 @@ class QuotesApp < ApplicationBase
 
     if quotes.empty?
       messages << "You haven't marked any favorite quotes!"
-    else
-      messages << "#{quotes.size} favorite quotes"
     end
 
     display_page quotes_path, :quotes => quotes
   end
 
   get '/user/:uid/tags' do
-    tags = get_tags(uid)
+    tags = build_attributes get_tags(uid)
     tags = tags.first(params[:limit].to_i) if params[:limit]
 
     messages << "You haven't tagged any quotes!" if tags.empty?
@@ -148,19 +146,7 @@ class QuotesApp < ApplicationBase
   end
 
   get '/publication/new' do
-    display_page new_publication_path, :form_page => true
-  end
-
-  post '/publication/new' do
-    result = build_publication
-
-    if result.error
-      messages << "Invalid input"
-      redirect '/publication/new'
-    else
-      messages << "Publication created successfully"
-      redirect "/publication/#{result.uid}"
-    end
+    display_as_partial new_publication_path
   end
 
   get '/publication/edit/:uid' do
@@ -189,7 +175,8 @@ class QuotesApp < ApplicationBase
   get '/quote/new' do
     display_page new_quote_path,
       :form_page => true,
-      :publications => publications
+      :publications => publications,
+      :tags => tags.uniq
   end
 
   post '/quote/new' do
@@ -207,7 +194,9 @@ class QuotesApp < ApplicationBase
   get '/quote/edit/:uid' do
     display_page edit_quote_path,
       :form_page => true,
-      :quote => quote_by_uid(uid)
+      :quote => quote_by_uid(uid),
+      :publications => publications,
+      :tags => tags.uniq
   end
 
   post '/quote/edit/:uid' do
@@ -242,7 +231,7 @@ class QuotesApp < ApplicationBase
 
   get '/tags' do
     display_page :attribute_index,
-      :attributes => get_tags,
+      :attributes => build_attributes(tags),
       :kind => 'tag'
   end
 
@@ -256,7 +245,7 @@ class QuotesApp < ApplicationBase
       :kind => 'author'
   end
 
-  get '/toggle_star/:uid' do |uid|
+  get '/toggle_star/:uid' do
     toggle_star(uid)
     nil
   end

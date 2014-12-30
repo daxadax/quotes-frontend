@@ -13,6 +13,12 @@ class ApplicationBase < Sinatra::Application
       get_publications
     end
 
+    def tags
+      #cache for 60 seconds
+
+      get_tags
+    end
+
     def current_user
       return nil unless current_user_uid
       @curent_user ||= get_user(current_user_uid)
@@ -175,19 +181,10 @@ class ApplicationBase < Sinatra::Application
       quotes.select { |quote| quote.title == title }
     end
 
-    def display_page(location, locals = {})
-      @form_page = !locals.delete(:form_page).nil?
-      haml location.to_sym, :locals => locals
-    end
-
-    def display_widget(locals = {})
-      display_page 'widget', locals\
-    end
-
     def get_tags(user_uid = nil)
       used_quotes = user_uid ?  quotes_by_user(user_uid) : quotes
 
-      @tags ||= build_attributes used_quotes.flat_map(&:tags)
+      @tags ||= used_quotes.flat_map(&:tags)
     end
 
     def get_top_tags
@@ -230,8 +227,21 @@ class ApplicationBase < Sinatra::Application
       "<a href=\"#{url}\" #{attributes}>#{text}</a>"
     end
 
-    def show_author_for(quote)
-      author = quote.author
+    def display_page(location, locals = {})
+      @form_page = !locals.delete(:form_page).nil?
+      haml location.to_sym, :locals => locals
+    end
+
+    def display_widget(locals = {})
+      display_as_partial 'widget', locals
+    end
+
+    def display_as_partial(location, locals = {})
+      haml location.to_sym, :layout => false, :locals => locals
+    end
+
+    def show_author_for(object)
+      author = object.author
       link_to "/author/#{author}", author unless params[:author]
     end
 
@@ -240,13 +250,6 @@ class ApplicationBase < Sinatra::Application
       title = object.title
 
       link_to "/publication/#{uid}", title
-    end
-
-    def show_author_for(object)
-      uid = publication_uid_for object
-      author = object.author
-
-      link_to "/authors/#{author}", author
     end
 
     def determine_favorite_class(quote_uid)

@@ -1,6 +1,10 @@
+- number_of_publications_shown = quotes.map(&:publication_uid).uniq.size
+
 %h2= display_relevant_count_for quotes
 
 - quotes.group_by(&:publication_uid).each do |_, quotes|
-  = display_page publication_partial, :publication => quotes.first
-  - quotes.each do |quote|
-    .quote.clear= display_page(quote_partial, :quote => quote)
+    = display_page publication_partial,
+      :publication => quotes.first,
+      :quotes => quotes,
+      :hide_all => (true if number_of_publications_shown > 1)
+    .clear

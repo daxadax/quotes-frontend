@@ -11,7 +11,7 @@
 %body
   - unless @form_page
     #header
-      =render :haml, :header
+      = render :haml, :header
   #content
     .container
       = render :haml, :messages if messages.any?
@@ -20,4 +20,8 @@
 %script{:src => '/javascript/jquery2.1.1.min.js'}
 %script{:src => '/javascript/bootstrap.min.js'}
 %script{:src => '/javascript/toggle_star.js'}
+%script{:src => '/javascript/toggle_viewable.js'}
 %script{:src => '/javascript/user_profile_widgets.js'}
+- if @form_page
+  %script{:src => '/javascript/tags_autocompletion.js'}
+  %script{:src => '/javascript/add_new_publication.js'}
