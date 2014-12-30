@@ -19,6 +19,14 @@ module Helpers
     end
 
     def build_quote
+      if !params[:publication]
+        result = build_publication
+        return result if result.error
+        publication_uid = result.uid
+      else
+        publication_uid = params[:publication].to_i
+      end
+
       page_number = params[:pagenumber]  unless params[:pagenumber].empty?
       links = nil
 
@@ -26,7 +34,7 @@ module Helpers
         :user_uid => current_user_uid,
         :quote => {
           :content => params[:content],
-          :publication_uid => params[:publication].to_i,
+          :publication_uid => publication_uid,
           :page_number => page_number,
           :tags => build_tags,
           :links => links

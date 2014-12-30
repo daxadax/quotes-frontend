@@ -1,14 +1,18 @@
+-# publications: a collection of all publications in the database
+-# tags: a collection of all tags in the database
+
 %form.form-vertical{ :action => '/quote/new', :method => 'post', :role => 'form'}
   %fieldset
 
   %legend Create a new quote
 
-  .form-group
+  #publication-holder.form-group
     %label.control-label.sr-only{:for => 'publication'} Select publication
     %select.form-control{:name => 'publication'}
       %option Choose the title this quote belongs to
       -publications.each do |publication|
         %option{:value => publication.uid}= publication.title
+    .pull-right= "or <a id=add-new-publication>add a new one</a>"
 
   .form-group
     %label.control-label{:for => "content"} Content
@@ -28,7 +32,8 @@
 
   .form-group
     %label.control-label{:for => "tags"} Tags
-    %input.form-control{:name => 'tags',
+    #tag-data{:data => {:tags => tags}}
+    %input#tags-input.form-control{:name => 'tags',
                                   :type => 'text',
                                   :placeholder => 'Enter tags separated by commas'}
 
