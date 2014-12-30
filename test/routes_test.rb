@@ -4,6 +4,7 @@ class RoutesTest < QuotesAppTest
   let(:routes_tested) do
     [
       '/',
+      '/random',
       '/login',
       '/user/new',
       "/user/#{@user.uid}",

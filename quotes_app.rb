@@ -1,9 +1,13 @@
-require 'quotes'
 require './application_base'
 
 class QuotesApp < ApplicationBase
 
   get '/' do
+    redirect user_profile_path if current_user
+    redirect '/random'
+  end
+
+  get '/random' do
     display_page quotes_path, :quotes => [quotes.sample]
   end
 
@@ -42,7 +46,7 @@ class QuotesApp < ApplicationBase
       session[:current_user_uid] = result.uid
       messages << 'Authentication successful'
 
-      redirect '/'
+      redirect user_profile_path
     end
   end
 
