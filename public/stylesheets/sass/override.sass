@@ -6,13 +6,6 @@ body, nav
   padding-right: 5px
   top: 6px !important
 
-legend, label
-  color: #bbb !important
-
-textarea, input, select
-  background-color: #666 !important
-  color: #ccc !important
-
 #content
   padding-top: 60px
   padding-bottom: 60px
@@ -88,15 +81,36 @@ a:hover
     margin-left: 2%
   .tags
     padding-left: 10px
+    .tag
+      margin-left: 7px
+      padding: 10px !important
     .glyphicon-tags
-      margin-top: 20px
+      margin-top: 15px
 
 .profile-box
   margin: 10px 0px
 
-#tag-data
-  font-size: 1.2em
-  color: #bbb
-  margin: 5px
-  .tag-suggestion
-    padding: 5px
+form
+  legend, label
+    color: #bbb !important
+
+  textarea, input, select
+    background-color: #666 !important
+    color: #ccc !important
+
+  #suggested-tags
+    .suggested-tag
+      line-height: 50px
+      cursor: pointer
+      color: #337ab7
+      // background: #ccc
+      // border: 1px solid #bbb
+      margin: 5px
+      padding: 5px
+
+  #tag-data
+    font-size: 1.2em
+    color: #bbb
+    margin: 5px
+    .tag-matcher
+      padding: 5px
