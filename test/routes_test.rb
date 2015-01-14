@@ -18,8 +18,9 @@ class RoutesTest < QuotesAppTest
       '/quotes',
       "/quote/#{@quote.uid}",
       '/quote/new',
-      "/quote/edit/#{@quote.uid}",
-      "/quote/delete/#{@quote.uid}",
+      "/edit_quote/#{@quote.uid}",
+      "/delete_quote/#{@quote.uid}",
+      "/similar_quote/#{@quote.uid}",
       '/tags',
       "/tag/tag",
       '/authors',
@@ -32,7 +33,7 @@ class RoutesTest < QuotesAppTest
   it "tests all the 'get' routes" do
     number_of_routes = app.routes["GET"].size
 
-    assert_equal number_of_routes, routes_tested.size
+    assert_equal number_of_routes, routes_tested.size,
     routes_tested.each { |route| assert_successful_loading_of route }
   end
 
