@@ -2,7 +2,7 @@
 -# tags: a collection of all tags in the database
 -# quote: the quote being editted
 
-%form.form-vertical{ :action => "/quote/edit/#{quote.uid}", :method => 'post', :role => 'form'}
+%form.form-vertical{ :action => "/edit_quote/#{quote.uid}", :method => 'post', :role => 'form'}
   %fieldset
 
   %legend=  "Edit quote from #{quote.title} by #{quote.author}"
@@ -17,8 +17,8 @@
 
   .form-group
     %label.control-label{:for => "content"} Content
-    %textarea.form-control{:name => "content",
-                                          :rows => 7}
+    %textarea#content-input.form-control{:name => "content",
+                                                              :rows => 7}
       = quote.content
 
   .form-group
@@ -36,9 +36,10 @@
 
   .form-group
     %label.control-label{:for => "tags"} Tags
-    #tag-data{:data => {:tags => tags}}
+    #suggested-tags
     %input#tags-input.form-control{:name => 'tags',
                                     :type => 'text',
                                     :value => quote.tags.join(', ')}
+    #tag-data{:data => {:tags => tags}}
 
   %button.btn.btn-primary{:type => 'submit'} Update Quote

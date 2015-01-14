@@ -16,7 +16,9 @@
 
   .form-group
     %label.control-label{:for => "content"} Content
-    %textarea.form-control{:name => "content", :rows => 7, :placeholder => 'required'}
+    %textarea#content-input.form-control{:name => "content",
+                                                              :rows => 7,
+                                                              :placeholder => 'required'}
 
   .form-group
     %label.control-label{:for => "pagenumber"} Page Number

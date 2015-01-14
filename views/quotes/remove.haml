@@ -4,6 +4,6 @@
 
 = quote.content
 
-%form{ :action => "/quote/delete/#{quote.uid}", :method => 'post'}
+%form{ :action => "/delete_quote//#{quote.uid}", :method => 'post'}
   %input{:type => 'submit', :value => 'Confirm delete', :class => 'button'}
   = "or #{link_to "/quote/#{quote.uid}", 'cancel', {:class => 'button'}}"
