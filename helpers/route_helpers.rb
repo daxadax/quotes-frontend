@@ -41,9 +41,5 @@ module Helpers
       "/user/#{uid}/tags" + limit.to_s
     end
 
-    def untagged_quotes_path
-      "/user/#{current_user_uid}/untagged"
-    end
-
   end
 end

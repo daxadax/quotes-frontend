@@ -9,7 +9,6 @@ class RoutesTest < QuotesAppTest
       '/user/new',
       "/user/#{@user.uid}",
       "/user/#{@user.uid}/added/quotes",
-      "/user/#{@user.uid}/untagged",
       "/user/#{@user.uid}/favorites",
       "/user/#{@user.uid}/tags",
       "/publication/#{@publication.uid}",

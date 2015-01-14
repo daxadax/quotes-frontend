@@ -21,6 +21,5 @@
         %li= link_to '/quotes', 'View All'
         - if current_user
           %li= link_to user_quotes_path(current_user_uid), "Added by me"
-          %li= link_to untagged_quotes_path, "Untagged"
           %li= link_to favorite_quotes_path(current_user_uid), "Favorites"
           %li= link_to '/quote/new', 'Add a new quote'

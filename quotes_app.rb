@@ -94,18 +94,6 @@ class QuotesApp < ApplicationBase
     show_quotes quotes
   end
 
-  get '/user/:uid/untagged' do
-    quotes = untagged_quotes_for_user uid
-
-    if quotes.empty?
-      messages << "You haven't added any quotes!"
-    else
-      messages << "#{quotes.size} quotes with no tags"
-    end
-
-    show_quotes quotes
-  end
-
   get '/user/:uid/favorites' do
     quotes = favorite_quotes_for_user uid
     quotes = quotes.first(params[:limit].to_i) if params[:limit]
