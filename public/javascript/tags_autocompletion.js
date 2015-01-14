@@ -11,11 +11,10 @@ $(document).ready( function() {
       };
     });
 
-
   var detectMatchingTags = function(userInput, result) {
     tags.map(function(tag) {
       if(tag.match(userInput)){
-        result.push("<span class='tag-suggestion'>"+ tag + '</span>');
+        result.push("<span class='tag-matcher'>"+ tag + '</span>');
       };
     });
   };
