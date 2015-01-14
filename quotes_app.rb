@@ -8,7 +8,7 @@ class QuotesApp < ApplicationBase
   end
 
   get '/random' do
-    display_page quotes_path, :quotes => [quotes.sample]
+    show_quote(quotes.sample)
   end
 
   post '/search' do
@@ -21,13 +21,13 @@ class QuotesApp < ApplicationBase
     msg += " that include '#{query}'" unless query.empty?
 
     messages << msg
-    display_page quotes_path, :quotes => result.quotes
+    show_quotes result.quotes
   end
 
   ######### start users #########
 
   get '/login' do
-    display_page login_path, :form_page => true
+    display_page login_template, :form_page => true
   end
 
   post '/login' do
@@ -58,7 +58,7 @@ class QuotesApp < ApplicationBase
   end
 
   get '/user/new' do
-    display_page registration_path, :form_page => true
+    display_page registration_template, :form_page => true
   end
 
   post '/user/new' do
@@ -91,15 +91,7 @@ class QuotesApp < ApplicationBase
     quotes = quotes.first(params[:limit].to_i) if params[:limit]
 
     messages << "You haven't added any quotes!" if quotes.empty?
-    display_page quotes_path, :quotes => quotes
-  end
-
-  get '/user/:uid/added/publications' do
-    publications = publications_by_user uid
-    publications = publications.first(params[:limit].to_i) if params[:limit]
-
-    messages << "You haven't added any publications!" if publications.empty?
-    display_page publications_path, :publications => publications
+    show_quotes quotes
   end
 
   get '/user/:uid/untagged' do
@@ -111,7 +103,7 @@ class QuotesApp < ApplicationBase
       messages << "#{quotes.size} quotes with no tags"
     end
 
-    display_page quotes_path, :quotes => quotes
+    show_quotes quotes
   end
 
   get '/user/:uid/favorites' do
@@ -122,7 +114,7 @@ class QuotesApp < ApplicationBase
       messages << "You haven't marked any favorite quotes!"
     end
 
-    display_page quotes_path, :quotes => quotes
+    show_quotes quotes
   end
 
   get '/user/:uid/tags' do
@@ -137,20 +129,16 @@ class QuotesApp < ApplicationBase
 
   ######### start publications #########
 
-  get '/publications' do
-    display_page publications_path, :publications => publications
-  end
-
   get %r{/publication/([\d]+)} do |uid|
-    display_page quotes_path, :quotes => quotes_by_publication(uid)
+    show_quotes quotes_by_publication(uid)
   end
 
   get '/publication/new' do
-    display_as_partial new_publication_path
+    display_as_partial new_publication_template
   end
 
   get '/publication/edit/:uid' do
-    display_page edit_publication_path,
+    display_page edit_publication_template,
       :form_page => true,
       :publication => publication_by_uid(uid)
   end
@@ -165,15 +153,19 @@ class QuotesApp < ApplicationBase
   ######### start quotes #########
 
   get %r{/quote/([\d]+)} do |uid|
-    display_page quotes_path, :quotes => [ quote_by_uid(uid) ]
+    show_quote quote_by_uid(uid)
   end
 
   get '/quotes' do
-    display_page quotes_path, :quotes => quotes
+    show_quotes quotes
+  end
+
+  get '/similar_quotes/:uid' do
+    show_quotes similar_quotes(uid)
   end
 
   get '/quote/new' do
-    display_page new_quote_path,
+    display_page new_quote_template,
       :form_page => true,
       :publications => publications,
       :tags => tags.uniq
@@ -191,26 +183,26 @@ class QuotesApp < ApplicationBase
     end
   end
 
-  get '/quote/edit/:uid' do
-    display_page edit_quote_path,
+  get '/edit_quote/:uid' do
+    display_page edit_quote_template,
       :form_page => true,
       :quote => quote_by_uid(uid),
       :publications => publications,
       :tags => tags.uniq
   end
 
-  post '/quote/edit/:uid' do
+  post '/edit_quote/:uid' do
     result = update_quote
     redirect "/quote/#{uid}"
   end
 
-  get '/quote/delete/:uid' do
+  get '/delete_quote/:uid' do
     display_page :confirm_delete,
       :form_page => true,
       :quote => quote_by_uid(uid)
   end
 
-  post '/quote/delete/:uid' do
+  post '/delete_quote/:uid' do
     result = delete_quote
 
     if result.error
@@ -226,7 +218,7 @@ class QuotesApp < ApplicationBase
   ######### end quotes #########
 
   get '/tag/:tag' do
-    display_page quotes_path, :quotes => quotes_by_tag(params[:tag])
+    show_quotes quotes_by_tag(params[:tag])
   end
 
   get '/tags' do
@@ -236,7 +228,7 @@ class QuotesApp < ApplicationBase
   end
 
   get '/author/:author' do
-    display_page quotes_path, :quotes => quotes_by_author(params[:author])
+    show_quotes quotes_by_author(params[:author])
   end
 
   get '/authors' do

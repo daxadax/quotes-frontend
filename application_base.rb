@@ -1,5 +1,7 @@
 class ApplicationBase < Sinatra::Application
   include Helpers::UseCaseCalling
+  include Helpers::TemplateHelpers
+  include Helpers::RouteHelpers
 
     def quotes
       #cache for 60 seconds
@@ -32,88 +34,6 @@ class ApplicationBase < Sinatra::Application
     def current_user_uid
       return nil unless session[:current_user_uid]
       session[:current_user_uid].to_i
-    end
-
-    def registration_path
-      'users/register'
-    end
-
-    def login_path
-      'users/login'
-    end
-
-    def publications_path
-      'publications/index'
-    end
-
-    def new_publication_path
-      'publications/new'
-    end
-
-    def edit_publication_path
-      'publications/edit'
-    end
-
-    def publication_partial
-      'publications/publication'
-    end
-
-    def quotes_path
-      'quotes/index'
-    end
-
-    def new_quote_path
-      'quotes/new'
-    end
-
-    def edit_quote_path
-      'quotes/edit'
-    end
-
-    def remove_quote_path
-      'quotes/remove'
-    end
-
-    def quote_partial
-      'quotes/quote'
-    end
-
-    def user_profile_path(uid = nil)
-      uid ||= current_user.uid
-
-      "/user/#{uid}"
-    end
-
-    def user_partial
-      '/users/user'
-    end
-
-    def user_quotes_path(uid, limit = nil)
-      limit = "?limit=#{limit}" if limit
-
-      "/user/#{uid}/added/quotes" + limit.to_s
-    end
-
-    def user_publications_path(uid, limit = nil)
-      limit = "?limit=#{limit}" if limit
-
-      "/user/#{uid}/added/publications" + limit.to_s
-    end
-
-    def favorite_quotes_path(uid, limit = nil)
-      limit = "?limit=#{limit}" if limit
-
-      "/user/#{uid}/favorites" + limit.to_s
-    end
-
-    def user_tags_path(uid, limit = nil)
-      limit = "?limit=#{limit}" if limit
-
-      "/user/#{uid}/tags" + limit.to_s
-    end
-
-    def untagged_quotes_path
-      "/user/#{current_user_uid}/untagged"
     end
 
     def handle_login_error(error)
@@ -165,6 +85,15 @@ class ApplicationBase < Sinatra::Application
 
     def quotes_by_tag(tag)
      quotes.select {|quote| quote.tags.include?(tag)}
+    end
+
+    def similar_quotes(uid)
+      quote = quote_by_uid(uid)
+
+      similar = quotes.select do |q|
+        next if q == quote
+        (q.tags & quote.tags).size > 2
+      end
     end
 
     def untagged_quotes_for_user(uid)
@@ -221,12 +150,6 @@ class ApplicationBase < Sinatra::Application
 
   helpers do
 
-    def link_to(url, text=url, opts={})
-      attributes = ""
-      opts.each { |key,value| attributes << key.to_s << "=\"" << value << "\" "}
-      "<a href=\"#{url}\" #{attributes}>#{text}</a>"
-    end
-
     def display_page(location, locals = {})
       @form_page = !locals.delete(:form_page).nil?
       haml location.to_sym, :locals => locals
@@ -238,6 +161,12 @@ class ApplicationBase < Sinatra::Application
 
     def display_as_partial(location, locals = {})
       haml location.to_sym, :layout => false, :locals => locals
+    end
+
+    def link_to(url, text=url, opts={})
+      attributes = ""
+      opts.each { |key,value| attributes << key.to_s << "=\"" << value << "\" "}
+      "<a href=\"#{url}\" #{attributes}>#{text}</a>"
     end
 
     def show_author_for(object)
