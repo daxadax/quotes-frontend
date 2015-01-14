@@ -152,6 +152,10 @@ class QuotesApp < ApplicationBase
     show_quotes similar_quotes(uid)
   end
 
+  get '/quotes/import_from_kindle' do
+    display_page kindle_import_template
+  end
+
   get '/quote/new' do
     display_page new_quote_template,
       :form_page => true,

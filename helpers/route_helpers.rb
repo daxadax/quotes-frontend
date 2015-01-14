@@ -5,6 +5,10 @@ module Helpers
       "/quote/#{uid}"
     end
 
+    def kindle_import_path
+      "/quotes/import_from_kindle"
+    end
+
     def edit_quote_path(uid)
       "/edit_quote/#{uid}"
     end

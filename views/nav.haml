@@ -22,4 +22,5 @@
         - if current_user
           %li= link_to user_quotes_path(current_user_uid), "Added by me"
           %li= link_to favorite_quotes_path(current_user_uid), "Favorites"
+          %li= link_to kindle_import_path, "Import quotes from Kindle"
           %li= link_to '/quote/new', 'Add a new quote'

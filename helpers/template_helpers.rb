@@ -45,6 +45,10 @@ module Helpers
       'quotes/show'
     end
 
+    def kindle_import_template
+      'quotes/kindle_import'
+    end
+
     def new_quote_template
       'quotes/new'
     end

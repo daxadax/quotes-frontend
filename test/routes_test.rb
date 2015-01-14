@@ -16,6 +16,7 @@ class RoutesTest < QuotesAppTest
       "/publication/edit/#{@publication.uid}",
       '/quotes',
       "/quote/#{@quote.uid}",
+      '/quotes/import_from_kindle',
       '/quote/new',
       "/edit_quote/#{@quote.uid}",
       "/delete_quote/#{@quote.uid}",
