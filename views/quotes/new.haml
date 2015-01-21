@@ -34,9 +34,10 @@
 
   .form-group
     %label.control-label{:for => "tags"} Tags
-    #tag-data{:data => {:tags => tags}}
+    #suggested-tags
     %input#tags-input.form-control{:name => 'tags',
                                   :type => 'text',
                                   :placeholder => 'Enter tags separated by commas'}
+    #tag-data{:data => {:tags => tags}}
 
   %button.btn.btn-primary{:type => 'submit'} Add Quote
