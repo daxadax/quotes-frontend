@@ -35,8 +35,10 @@ class QuotesAppTest < Minitest::Spec
   end
 
   def assert_successful_loading_of(route)
+    failure_msg = "Unexpected response for #{page.current_url}"
+
     visit route
-    
+    assert_equal 200, page.status_code, failure_msg
   end
 
   def login(nickname, auth_key)

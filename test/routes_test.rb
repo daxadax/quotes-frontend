@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class RoutesTest < QuotesAppTest
+  # order is important!
   let(:routes_tested) do
     [
       '/',
@@ -19,13 +20,13 @@ class RoutesTest < QuotesAppTest
       '/quotes/import_from_kindle',
       '/quote/new',
       "/edit_quote/#{@quote.uid}",
-      "/delete_quote/#{@quote.uid}",
-      "/similar_quote/#{@quote.uid}",
+      "/similar_quotes/#{@quote.uid}",
       '/tags',
       "/tag/tag",
       '/authors',
       "/author/author",
       "/toggle_star/#{@quote.uid}",
+      "/delete_quote/#{@quote.uid}",
       '/logout'
     ]
   end
