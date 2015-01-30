@@ -5,6 +5,14 @@ module Helpers
       "/quote/#{uid}"
     end
 
+    def publication_path(uid)
+      "/publication/#{uid}"
+    end
+
+    def author_path(author)
+      "/author/#{author}"
+    end
+
     def kindle_import_path
       "/quotes/import_from_kindle"
     end
