@@ -87,12 +87,18 @@ class ApplicationBase < Sinatra::Application
      quotes.select {|quote| quote.tags.include?(tag)}
     end
 
-    def similar_quotes(uid)
-      quote = quote_by_uid(uid)
-
+    def similar_quotes(quote)
       similar = quotes.select do |q|
         next if q == quote
-        (q.tags & quote.tags).size > 2
+
+        case
+        when quote.tags.size <= 3
+          (q.tags & quote.tags).size == quote.tags.size
+        when quote.tags.size <= 7
+          (q.tags & quote.tags).size / quote.tags.size.to_f > 0.5
+        else
+          (q.tags & quote.tags).size / quote.tags.size.to_f > 0.3
+        end
       end
     end
 

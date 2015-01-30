@@ -149,7 +149,14 @@ class QuotesApp < ApplicationBase
   end
 
   get '/similar_quotes/:uid' do
-    show_quotes similar_quotes(uid)
+    quote = quote_by_uid(uid)
+    quotes = similar_quotes(quote)
+
+    messages << "Showing #{quotes.size} similar quotes "\
+    "for #{link_to quote_path(uid), "quote ##{uid}"} "\
+    "from #{link_to publication_path(quote.publication_uid), quote.title} "\
+    "by #{link_to author_path(quote.author), quote.author}"
+    show_quotes quotes
   end
 
   get '/quotes/import_from_kindle' do
