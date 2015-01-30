@@ -3,6 +3,7 @@
     .glyphicon.glyphicon-star.star{:class => determine_favorite_class(quote.uid),
                                                     :data => {:uid => quote.uid,
                                                                     :current_user => current_user_uid}}
+    = quote.page_number
     %ul.nav.navbar-nav.pull-right
       - if current_user_owns?(quote)
         %li= link_to edit_quote_path(quote.uid), 'edit'
