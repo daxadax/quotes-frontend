@@ -7,8 +7,8 @@
   %legend Create a new quote
 
   #publication-holder.form-group
-    %label.control-label.sr-only{:for => 'publication'} Select publication
-    %select.form-control{:name => 'publication'}
+    %label.control-label.sr-only{:for => 'publication_uid'} Select publication
+    %select.form-control{:name => 'publication_uid'}
       %option Choose the title this quote belongs to
       -publications.each do |publication|
         %option{:value => publication.uid}= publication.title
@@ -21,8 +21,8 @@
                                                               :placeholder => 'required'}
 
   .form-group
-    %label.control-label{:for => "pagenumber"} Page Number
-    %input.form-control{:name => 'pagenumber',
+    %label.control-label{:for => "page_number"} Page Number
+    %input.form-control{:name => 'page_number',
                                   :type => 'text',
                                   :placeholder => 'required'}
 

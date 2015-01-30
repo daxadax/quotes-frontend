@@ -2,66 +2,52 @@ module Helpers
   module UseCaseCalling
 
     def build_search_results
-      input = { :query => params[:search] }
+      input = { :query => params['search'] }
 
-      call_use_case(:search, input)
+      call_use_case :search, input
     end
 
     def build_publication
       call_use_case :create_publication,
         :user_uid => current_user_uid,
-        :publication => {
-          :author => params[:author],
-          :title => params[:title],
-          :publisher => params[:publisher],
-          :year => params[:year]
-        }
+        :publication => symbolize_keys(params)
     end
 
     def build_quote
-      if !params[:publication]
+      if !params['publication_uid']
         result = build_publication
         return result if result.error
-        publication_uid = result.uid
+        params['publication_uid'] = result.uid
       else
-        publication_uid = params[:publication].to_i
+        params['publication_uid'].to_i
       end
 
-      page_number = params[:pagenumber]  unless params[:pagenumber].empty?
-      links = nil
+      params['tags'] = build_tags
 
       call_use_case :create_quote,
         :user_uid => current_user_uid,
-        :quote => {
-          :content => params[:content],
-          :publication_uid => publication_uid,
-          :page_number => page_number,
-          :tags => build_tags,
-          :links => links
-        }
+        :quote => symbolize_keys(params)
+    end
+
+    def autotag
+      call_use_case :autotag_quotes
     end
 
     def update_quote
       quote = quote_by_uid(uid)
+      params['tags'] = build_tags
 
       call_use_case :update_quote,
         :user_uid => current_user.uid,
-        :quote => {
-           :uid => uid,
-           :added_by => quote.added_by,
-           :content => params[:content] || quote.content,
-           :publication_uid => params[:publication].to_i || quote.publication_uid,
-           :page_number => params[:pagenumber].to_i || quote.page_number,
-           :links => params[:links] || quote.links,
-           :tags => build_tags || quote.tags
-        }
+        :uid => uid,
+        :updates => symbolize_keys(params)
     end
 
     def update_publication
       call_use_case :update_publication,
         :user_uid => current_user_uid,
         :uid => uid,
-        :updates => params
+        :updates => symbolize_keys(params)
     end
 
     def delete_quote
@@ -79,7 +65,7 @@ module Helpers
     end
 
     def get_user(uid)
-      result = call_use_case(:get_user, :uid => uid)
+      result = call_use_case :get_user, :uid => uid
       return result.user unless result.error
     end
 
@@ -91,8 +77,18 @@ module Helpers
 
     private
 
+    def symbolize_keys(hash)
+      hash.inject({}) do |result, (key, value)|
+        new_key = key.is_a?(String) ? key.to_sym : key
+        new_value = value.is_a?(Hash) ? symbolize_keys(value) : value
+
+        result[new_key] = new_value
+        result
+      end
+    end
+
     def build_tags
-      params[:tags].split(',').each(&:strip!) if params[:tags]
+      params['tags'].split(',').each(&:strip!) if params['tags']
     end
 
     def call_use_case(use_case, args = nil)

@@ -8,8 +8,8 @@
   %legend=  "Edit quote from #{quote.title} by #{quote.author}"
 
   .form-group
-    %label.control-label.sr-only{:for => 'publication'} Select publication
-    %select.form-control{:name => 'publication'}
+    %label.control-label.sr-only{:for => 'publication_uid'} Select publication
+    %select.form-control{:name => 'publication_uid'}
       %option{:value => quote.publication_uid}= quote.title
       -publications.each do |publication|
         - unless publication.title == quote.title
@@ -22,8 +22,8 @@
       = quote.content
 
   .form-group
-    %label.control-label{:for => "pagenumber"} Page Number
-    %input.form-control{:name => 'pagenumber',
+    %label.control-label{:for => "page_number"} Page Number
+    %input.form-control{:name => 'page_number',
                                     :type => 'text',
                                     :placeholder => 'required',
                                     :value => quote.page_number}
