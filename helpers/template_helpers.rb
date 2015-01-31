@@ -46,7 +46,7 @@ module Helpers
     end
 
     def kindle_import_template
-      'quotes/kindle_import'
+      'kindle_import'
     end
 
     def new_quote_template

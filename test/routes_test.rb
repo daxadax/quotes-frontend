@@ -17,7 +17,7 @@ class RoutesTest < QuotesAppTest
       "/publication/edit/#{@publication.uid}",
       '/quotes',
       "/quote/#{@quote.uid}",
-      '/quotes/import_from_kindle',
+      '/import_from_kindle',
       '/quote/new',
       "/edit_quote/#{@quote.uid}",
       "/similar_quotes/#{@quote.uid}",
@@ -29,6 +29,11 @@ class RoutesTest < QuotesAppTest
       "/delete_quote/#{@quote.uid}",
       '/logout'
     ]
+  end
+
+  before do
+    @publication = create_publication(@user)
+    @quote = create_quote(@user, @publication)
   end
 
   it "tests all the 'get' routes" do

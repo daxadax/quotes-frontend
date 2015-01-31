@@ -14,7 +14,7 @@ module Helpers
     end
 
     def kindle_import_path
-      "/quotes/import_from_kindle"
+      "/import_from_kindle"
     end
 
     def edit_quote_path(uid)

@@ -25,8 +25,6 @@ class QuotesAppTest < Minitest::Spec
     clean_database
     app.views = './views'
     @user = create_user
-    @publication = create_publication(@user)
-    @quote = create_quote(@user, @publication)
     page.driver.post('/login', { :nickname => "test user", :password => 'auth' })
   end
 
@@ -35,7 +33,7 @@ class QuotesAppTest < Minitest::Spec
   end
 
   def assert_successful_loading_of(route)
-    failure_msg = "Unexpected response for #{page.current_url}"
+    failure_msg = "Unexpected response for #{route}"
 
     visit route
     assert_equal 200, page.status_code, failure_msg
@@ -96,9 +94,5 @@ class QuotesAppTest < Minitest::Spec
 
   def database
     @database ||= Sequel.connect(ENV.fetch("DATABASE_URL"))
-  end
-
-  def migration_directory
-    "../persistence/migrations/"
   end
 end
