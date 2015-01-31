@@ -55,7 +55,6 @@ class ApplicationBase < Sinatra::Application
 
     def quote_by_uid(uid)
       result  = call_use_case :get_quote, :uid => uid.to_i
-
       result.quote
     end
 
