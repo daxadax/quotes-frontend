@@ -4,6 +4,7 @@ class QuotesApp < ApplicationBase
 
   get '/' do
     redirect user_profile_path if current_user
+    redirect '/user/new' if quotes.empty?
     redirect '/random'
   end
 
