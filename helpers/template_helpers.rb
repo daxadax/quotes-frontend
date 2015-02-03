@@ -49,6 +49,10 @@ module Helpers
       'kindle_import'
     end
 
+    def review_import_template
+      'kindle_import_review'
+    end
+
     def new_quote_template
       'quotes/new'
     end

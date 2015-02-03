@@ -1,11 +1,11 @@
--# .change-on-click
--#   = form_tag upload_path, :multipart => true  do
--#     %span.show-after-click
--#       = file_field_tag 'file', accept: 'text/csv', class: 'upload'
--#       %br
--#       = submit_tag 'Upload', :disabled => true
--#       = link_to 'abort', '#', :class => 'unchange-on-click'
--#   %span.show-before-click
--#     = button_tag :onclick => 'return false;' do
--#       = icon(:'upload-alt')
--#       Overwrite from CSV
+%form.form-vertical{:action=>"/import_from_kindle",
+                              :method=>"post",
+                              :role => 'form',
+                              :enctype=>"multipart/form-data"}
+  %fieldset
+
+  %legend Import highlights from your Kindle
+
+  %input#clippings-select{:type=>"file", :name=>"file"}
+
+  %button.btn.btn-primary{:type=>"submit", :id => 'submit'} Import

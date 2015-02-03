@@ -1,0 +1,30 @@
+#import-review
+  %h2.banner
+    Please review the quotes you've just imported
+  %ul
+    %li
+      Check title and author and fix any mistakes.
+    %li
+      Check that tags are reasonable and add any additional tags.
+    %li
+      If duplicate quotes have been detected, they will be displayed below.
+      You can either add them by clicking the green button,
+      or ignore them by clicking the red button.
+
+  - unless import.possible_duplicates.empty?
+    %h3.duplicate-quotes-warning.label-warning Possible duplicate quotes!
+
+    - import.possible_duplicates.each do |unsaved, saved|
+      .duplicate-box
+        =show_quote unsaved
+
+        %h4 is awfully close to
+
+        =show_quote saved
+
+        .duplicate-quote-btn-holder
+          .remove-duplicate-quote.btn.btn-danger Do not add this quote
+          .add-duplicate-quote.btn.btn-success Add this quote
+
+  -import.added_quotes.each do |quote|
+    = show_quote quote

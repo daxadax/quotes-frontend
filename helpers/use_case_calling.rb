@@ -29,6 +29,14 @@ module Helpers
         :quote => symbolize_keys(params)
     end
 
+    def import_from_kindle
+      file = File.read params[:file][:tempfile]
+
+      call_use_case :import_from_kindle,
+        :user_uid => current_user_uid,
+        :file => file
+    end
+
     def autotag
       call_use_case :autotag_quotes
     end

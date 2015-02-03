@@ -217,6 +217,23 @@ class QuotesApp < ApplicationBase
     display_page kindle_import_template
   end
 
+  post '/import_from_kindle' do
+    unless params[:file]
+      messages << "Nothing was uploaded.  Try again"
+      redirect '/import_from_kindle'
+    end
+
+    result = import_from_kindle
+
+    if result.error
+      messages << result.error
+      redirect '/import_from_kindle'
+    else
+      messages << "Import successful"
+      display_page '/kindle_import_review', :import => result
+    end
+  end
+
   get '/tag/:tag' do
     show_quotes quotes_by_tag(params[:tag])
   end
