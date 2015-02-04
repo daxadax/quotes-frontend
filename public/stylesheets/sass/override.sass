@@ -91,22 +91,31 @@ a:hover
   margin: 10px 0px
 
 #import-review
-  .duplicate-quotes-warning
-    color: black
+  #info-box
     padding: 10px
-    text-align: center
-
-  .duplicate-box
     border: 2px solid white
-    margin-bottom: 10px
-    padding: 10px
-    .duplicate-quote-btn-holder
-      text-align: center
-      .btn
-        margin: 5px
+  .duplicate-quotes-outer-holder
+    .duplicate-quotes-warning
+      padding: 10px
+    .duplicate-box
+      width: 95%
+      margin-left: 2.5%
+      margin-bottom: 10px
+      padding: 10px
+      border: 2px solid white
+      .duplicate-quotes-confirmation
+        text-align: right
+        .confirmation-title
+          float: left
+          color: black
+          font-size: 2em
+      .duplicate-quotes-btn-holder
+        text-align: right
+        .btn
+          margin: 5px
 
-    .quotes-container
-      width: 90%
+      .quotes-container
+        width: 90%
 
 
 form
