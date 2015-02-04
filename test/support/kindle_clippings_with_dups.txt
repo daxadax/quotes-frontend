@@ -1,10 +1,10 @@
 ==========
-The Denial of Death (Ernest Becker)
+Another Title (Ernest Becker)
 - Highlight on Page 256 | Loc. 3924-28  | Added on Thursday, March 15, 2012, 09:39 AM
 
 Sample highlight.
 ==========
-The Denial of Death (Ernest Becker)
+Another Title (Ernest Becker)
 - Note on Page 265 | Loc. 4050-57  | Added on Thursday, March 15, 2012, 09:55 AM
 
 Sample note.
@@ -14,7 +14,7 @@ Sample Book (Sample Author)
 
 This is a duplicate sample highlight.
 ==========
-The Denial of Death (Ernest Becker)
+Another Title (Ernest Becker)
 - Note on Page 265 | Loc. 4050-57  | Added on Thursday, March 15, 2012, 09:55 AM
 
 Sample note.
