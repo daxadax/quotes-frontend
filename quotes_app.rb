@@ -75,9 +75,8 @@ class QuotesApp < ApplicationBase
       messages << "Invalid input"
       redirect '/user/new'
     else
-      session[:current_user_uid] = result.uid
       messages << "Registration successful"
-      redirect '/'
+      redirect '/login'
     end
   end
 
