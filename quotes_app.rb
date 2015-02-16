@@ -3,6 +3,7 @@ require './application_base'
 class QuotesApp < ApplicationBase
 
   get '/' do
+    session.clear
     redirect user_profile_path if current_user
     redirect '/user/new' if quotes.empty?
     redirect '/random'
@@ -122,7 +123,7 @@ class QuotesApp < ApplicationBase
   end
 
   get '/publication/new' do
-    display_as_partial new_publication_template
+    display_page new_publication_template
   end
 
   get '/publication/edit/:uid' do
@@ -142,6 +143,12 @@ class QuotesApp < ApplicationBase
 
   get %r{/quote/([\d]+)} do |uid|
     show_quote quote_by_uid(uid)
+  end
+
+  get '/quote_partial/:uid' do
+    quote = quote_by_uid(uid)
+
+    display_page quote_partial, quote: quote
   end
 
   get '/quotes' do
@@ -170,12 +177,15 @@ class QuotesApp < ApplicationBase
     result = build_quote
 
     if result.error
-      messages << "Invalid input"
-      redirect '/quote/new'
+      messages << result.error
     else
       messages << "Quote created successfully"
-      redirect "/quote/#{result.uid}"
     end
+
+    {
+      :uid => result.uid,
+      :error => result.error
+    }.to_json
   end
 
   get '/edit_quote/:uid' do
@@ -188,7 +198,12 @@ class QuotesApp < ApplicationBase
 
   post '/edit_quote/:uid' do
     result = update_quote
-    redirect "/quote/#{uid}"
+
+    if result.error
+      messages << result.error
+    end
+
+    "/quote_partial/#{result.uid}"
   end
 
   get '/delete_quote/:uid' do
@@ -228,7 +243,7 @@ class QuotesApp < ApplicationBase
       messages << result.error
       redirect '/import_from_kindle'
     else
-      messages << "Import successful"
+      messages << "Successfully imported #{result.added_quotes.size} quotes"
       display_page '/kindle_import_review', :import => result
     end
   end

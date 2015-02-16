@@ -157,21 +157,40 @@ class ApplicationBase < Sinatra::Application
 
     def display_page(location, locals = {})
       @form_page = !locals.delete(:form_page).nil?
-      haml location.to_sym, :locals => locals
+      haml location.to_sym,
+        :layout_options => {
+          :views => 'views/layouts'
+        },
+        :layout => determine_layout,
+        :locals => locals
+    end
+
+    def display_partial(location, locals = {})
+      @form_page = !locals.delete(:form_page).nil?
+      haml location.to_sym,
+        :layout => false,
+        :locals => locals
+    end
+
+    def determine_layout
+      return :ajax if request.xhr?
+      :default
     end
 
     def display_widget(locals = {})
-      display_as_partial 'widget', locals
-    end
-
-    def display_as_partial(location, locals = {})
-      haml location.to_sym, :layout => false, :locals => locals
+      display_partial 'widget', locals
     end
 
     def link_to(url, text=url, opts={})
       attributes = ""
       opts.each { |key,value| attributes << key.to_s << "=\"" << value << "\" "}
       "<a href=\"#{url}\" #{attributes}>#{text}</a>"
+    end
+
+    def truncate_content(quote)
+      content = quote.content.split[0..3].join(" ")
+
+      "[#{quote.title}] #{content}..."
     end
 
     def show_author_for(object)

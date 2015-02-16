@@ -19,15 +19,17 @@
       - import.possible_duplicates.each do |unsaved, saved|
         .duplicate-box
           .duplicate-quotes-confirmation.hide
-            .confirmation-title=unsaved.title
+            .confirmation-title= truncate_content unsaved
             .cancel.btn.btn-default Cancel
           .duplicate-quotes-holder
-            .unsaved-quote=show_quote unsaved
-            %h4 is awfully close to
-            .saved-quote=show_quote saved
+            .unsaved-quote
+              = display_partial quote_partial, :quote => unsaved
+            %h4 is awfully close to the following previously added quote:
+            .saved-quote
+              = display_partial quote_partial, :quote => saved
           .duplicate-quotes-btn-holder
             .remove-duplicate-quote.btn.btn-danger Do not add this quote
             .add-duplicate-quote.btn.btn-success Add this quote
 
-  -import.added_quotes.each do |quote|
-    = show_quote quote
+  %h2 Successfully imported quotes:
+  = display_partial quotes_template, :quotes => import.added_quotes

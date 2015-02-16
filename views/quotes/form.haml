@@ -1,0 +1,51 @@
+-# publications: a collection of all publications in the database
+-# tags: a collection of all tags in the database
+-# quote: the quote being editted
+
+#form
+  - if request.path_info =~ /new/
+    %legend Create a new quote
+
+  #publication-holder
+    %label.control-label.sr-only{:for => 'publication_uid'} Select publication
+    %select.form-control{:name => 'publication_uid'}
+      - if request.path_info =~ /new/
+        %option Choose the title this quote belongs to
+      - else
+        %option{:value => quote.publication_uid}= quote.title
+      -publications.each do |publication|
+        - next if  request.path_info =~ /edit/ && publication.title == quote.title
+        %option{:value => publication.uid}= publication.title
+    .pull-right= "or <a id=add-new-publication>add a new one</a>"
+
+  %label.control-label{:for => "content"} Content
+  %textarea#content-input.form-control{:name => "content",
+                                                            :rows => 7,
+                                                            :placeholder => 'required'}
+    = quote.content if request.path_info =~ /edit/
+
+  %label.control-label{:for => "page_number"} Page Number
+  %input.form-control{:name => 'page_number',
+                                :type => 'text',
+                                :placeholder => 'required',
+                                :value => (quote.page_number if request.path_info =~ /edit/)}
+
+  -# .form-group
+  -#   %label.control-label{:for => "links"} Linked quotes
+  -#   %search.form-control{:name => "links",
+  -#                                 :type => "search",
+  -#                                 :placeholder => "search for linked quotes"}
+
+  %label.control-label{:for => "tags"} Tags
+  %span#suggested-tags
+  %input#tags-input.form-control{:name => 'tags',
+                                :type => 'text',
+                                :placeholder => 'Enter tags separated by commas',
+                                :value => (quote.tags.join(', ') if request.path_info =~ /edit/)}
+  #tag-data{:data => {:tags => tags}}
+
+  %button.btn.btn-primary#submit-quote{data: {path: request.path_info}}
+    - if request.path_info =~ /new/
+      Add Quote
+    - else
+      Update Quote

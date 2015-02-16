@@ -1,0 +1,20 @@
+%html
+%head
+  %link(rel="stylesheet" href='/stylesheets/bootstrap.min.css' type='text/css')
+  %link(rel="stylesheet" href='/stylesheets/override.css' type='text/css')
+  %meta{:charset => 'utf-8',
+              :name => 'viewport',
+              :content => 'width=device-width, initial-scale=1'}
+
+  %title= (defined? quote) ? quote.author : request.path_info
+
+%body
+  - unless @form_page
+    #header
+      = display_partial "layouts/header"
+  #content
+    .container
+      = display_partial 'layouts/messages' if messages.any?
+      = yield
+
+= display_partial "layouts/required_javascripts"

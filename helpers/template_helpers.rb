@@ -18,7 +18,7 @@ module Helpers
     end
 
     def user_partial
-      '/users/user'
+      'users/user'
     end
 
     def publications_template
@@ -54,11 +54,11 @@ module Helpers
     end
 
     def new_quote_template
-      'quotes/new'
+      'quotes/form'
     end
 
     def edit_quote_template
-      'quotes/edit'
+      'quotes/form'
     end
 
     def remove_quote_template

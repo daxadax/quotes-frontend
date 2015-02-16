@@ -6,17 +6,20 @@
     = quote.page_number
     %ul.nav.navbar-nav.pull-right
       - if current_user_owns?(quote)
-        %li= link_to edit_quote_path(quote.uid), 'edit'
+        %li.edit{:data => {:path => edit_quote_path(quote.uid)}}
+          %a edit
         %li= link_to delete_quote_path(quote.uid), 'delete'
       %li= link_to similar_quotes_path(quote.uid), 'similar quotes'
       %li= link_to quote_path(quote.uid), 'permalink'
 
-  %blockquote.clear= markdown quote.content
+  .quote-inner
 
-  - if quote.tags.any?
-    %ul.nav.navbar-nav.tags
-      %li.center-text.glyphicon.glyphicon-tags
-      - quote.tags.each do |tag|
-        %li= link_to "/tag/#{tag}", tag, :class => 'tag'
+    %blockquote.clear= markdown quote.content
+
+    - if quote.tags.any?
+      %ul.nav.navbar-nav.tags
+        %li.center-text.glyphicon.glyphicon-tags
+        - quote.tags.each do |tag|
+          %li= link_to "/tag/#{tag}", tag, :class => 'tag'
 
   .clear

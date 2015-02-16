@@ -4,8 +4,7 @@
 
 .publication-container
   - if quotes.any?
-    .quotes-hidden.glyphicon.glyphicon-chevron-right.pull-left
-    .quotes-displayed.glyphicon.glyphicon-chevron-down.pull-left.hide
+    = display_partial 'publications/toggle_buttons', hide_all: hide_all
 
   .publication
     .title
@@ -27,6 +26,6 @@
         = "#{publication.publisher} (#{publication.year})"
 
   - if quotes.any?
-    .container.quotes-container{:class => ('hide' if hide_all || quotes.size > 1)}
+    .quotes-container{:class => ('hide' if hide_all)}
       - quotes.each do |quote|
-        = display_page(quote_partial, :quote => quote)
+        = display_partial quote_partial, :quote => quote

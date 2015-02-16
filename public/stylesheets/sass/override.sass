@@ -10,6 +10,8 @@ body, nav
   padding-top: 60px
   padding-bottom: 60px
   color: #666
+  .container
+    width: 95%
   a:hover
     background: none !important
 
@@ -32,8 +34,6 @@ a:hover
     padding: 5px
   #content
     padding: 0
-    .container
-      width: inherit
 
 .attribute-table
   margin: 10px 0px
@@ -41,6 +41,7 @@ a:hover
     color: #bbb
   tbody
     color: #666
+
 .publication-container
   margin: 10px 0
   .publication
@@ -57,6 +58,9 @@ a:hover
       .author
         margin-right: 5px
         margin-bottom: 10px
+  .quotes-container
+    width: 95%
+    margin-left: 2.5%
 
 .quotes-hidden, .quotes-displayed
   cursor: pointer
@@ -115,11 +119,15 @@ a:hover
         .btn
           margin: 5px
 
-      .quotes-container
-        width: 90%
+.quote
+  #form
+    width: 95%
+    margin: 2.5%
 
+#form, form
+  #publication-holder
+    padding-top: 10px
 
-form
   legend, label
     color: #bbb !important
 
@@ -129,6 +137,7 @@ form
 
   input[type=file]
     background: none !important
+    width: 50%
 
   #clippings-select
     margin: 2em 0px
