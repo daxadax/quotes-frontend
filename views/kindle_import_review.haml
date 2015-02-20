@@ -21,7 +21,7 @@
           .duplicate-quotes-confirmation.hide
             .confirmation-title= truncate_content unsaved
             .cancel.btn.btn-default Cancel
-          .duplicate-quotes-holder
+          .duplicate-quotes-holder{data: {quote: quote_to_json(unsaved), path: new_quote_path}}
             .unsaved-quote
               = display_partial quote_partial, :quote => unsaved
             %h4 is awfully close to the following previously added quote:

@@ -1,4 +1,30 @@
 $(document).ready( function() {
+  var defaultBackground = $('body').css('background');
+
+  $('.remove-duplicate-quote').mousedown(function() {
+    $(this).parent().siblings('.duplicate-quotes-confirmation').removeClass('hide');
+    $(this).parent().siblings('.duplicate-quotes-holder').addClass('hide');
+    $(this).parent().parent().css('background', '#d9534f');
+    $(this).parent().addClass('hide');
+  });
+
+  $('.add-duplicate-quote').mousedown(function() {
+    var quote = $(this).parent().siblings('.duplicate-quotes-holder').data('quote'),
+          path = $(this).parent().siblings('.duplicate-quotes-holder').data('path');
+
+    $(this).parent().siblings('.duplicate-quotes-confirmation').removeClass('hide');
+    $(this).parent().siblings('.duplicate-quotes-holder').addClass('hide');
+    $(this).parent().parent().css('background', '#5cb85c');
+    submitQuote(path, quote, $(this).parent().parent());
+    $(this).parent().addClass('hide');
+  });
+
+  $('.cancel').mousedown(function() {
+    $(this).parent().siblings('.duplicate-quotes-btn-holder').removeClass('hide');
+    $(this).parent().siblings('.duplicate-quotes-holder').removeClass('hide');
+    $(this).parent().parent().css('background', defaultBackground);
+    $(this).parent().addClass('hide');
+  });
 
   $('.star').mousedown(function() {
     var quote_uid = $(this).data('uid'),
@@ -26,10 +52,14 @@ $(document).ready( function() {
           container = $(this).closest('.quote');
 
     // container.attr('src', '/images/ajax-loader.gif');
+    submitQuote(path, data, container);
+  });
+
+  var submitQuote = function(path, data, container){
     $.post(path, data).done(function(e){
 
       if( path.match(/edit/) != null ){
-        // edit always returns the redirect path
+        // edit returns the redirect path
         container.load(e);
       } else {
         // new returns a json object
@@ -37,7 +67,7 @@ $(document).ready( function() {
       };
       return false;
     });
-  });
+  };
 
   var redirectAfterCreate = function(e, container){
     var response = $.parseJSON(e);

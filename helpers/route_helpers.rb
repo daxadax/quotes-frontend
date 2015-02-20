@@ -1,6 +1,10 @@
 module Helpers
   module RouteHelpers
 
+    def new_quote_path
+      '/quote/new'
+    end
+
     def quote_path(uid)
       "/quote/#{uid}"
     end

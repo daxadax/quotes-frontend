@@ -193,6 +193,15 @@ class ApplicationBase < Sinatra::Application
       "[#{quote.title}] #{content}..."
     end
 
+    def quote_to_json(quote)
+      {
+        :content => quote.content,
+        :publication_uid => quote.publication_uid,
+        :page_number => quote.page_number,
+        :tags => quote.tags
+      }.to_json
+    end
+
     def show_author_for(object)
       author = object.author
       link_to "/author/#{author}", author unless params[:author]
