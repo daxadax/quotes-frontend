@@ -21,7 +21,7 @@ class ImportFromKindleTest < QuotesAppTest
       click_button 'submit'
     end
 
-    describe 'with an invalid clippings file' do
+    describe 'which is not a valid clippings file' do
       let(:file) { './test/support/non_kindle_file' }
 
       it 'returns to the import page with an error' do
@@ -31,7 +31,7 @@ class ImportFromKindleTest < QuotesAppTest
     end
 
     it 'imports the quotes in the clippings file' do
-      assert_includes page.body, "Import successful"
+      assert page.has_css?('.imported-quotes-holder'), page.body
       # this should pass.  https://github.com/jnicklas/capybara/issues/1460
       # assert_equal '/kindle_import_review', current_path
     end
@@ -43,8 +43,7 @@ class ImportFromKindleTest < QuotesAppTest
       end
 
       it 'displays duplicates if they are returned' do
-        assert_includes page.body, "Import successful"
-        assert_includes page.body, "Possible duplicate quotes"
+        assert page.has_css?(".duplicate-quotes-holder"), page.body
         # this should pass. https://github.com/jnicklas/capybara/issues/1460
         # assert_equal '/kindle_import_review', current_path
       end

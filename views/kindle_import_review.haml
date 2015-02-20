@@ -32,5 +32,5 @@
             .add-duplicate-quote.btn.btn-success Add this quote
 
   - unless import.added_quotes.size == 0
-    %h2 Successfully imported quotes:
+    %h2.imported-quotes-holder Successfully imported quotes:
     = display_partial quotes_template, :quotes => import.added_quotes
