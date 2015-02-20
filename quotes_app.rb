@@ -268,7 +268,7 @@ class QuotesApp < ApplicationBase
       :kind => 'author'
   end
 
-  get '/toggle_star/:uid' do
+  post '/toggle_star/:uid' do
     toggle_star(uid)
     nil
   end

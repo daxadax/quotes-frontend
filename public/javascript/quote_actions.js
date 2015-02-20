@@ -27,14 +27,16 @@ $(document).ready( function() {
   });
 
   $('.star').mousedown(function() {
-    var quote_uid = $(this).data('uid'),
-          current_user = $(this).data('currentUser');
+      var quote_uid = $(this).data('uid'),
+        current_user = $(this).data('currentUser');
 
     if(current_user != null){
-      var path = "/toggle_star/" + quote_uid;
+      var path = "/toggle_star/" + quote_uid,
+        el = $(this);
 
-      $(this).load(path);
-      toggleFavoriteClass($(this));
+      $.post(path).success(function() {
+        toggleFavoriteClass(el);
+      });
     }
   });
 

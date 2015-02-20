@@ -17,6 +17,7 @@ class RoutesTest < QuotesAppTest
       "/publication/edit/#{@publication.uid}",
       '/quotes',
       "/quote/#{@quote.uid}",
+      "/quote_partial/#{@quote.uid}",
       '/import_from_kindle',
       '/quote/new',
       "/edit_quote/#{@quote.uid}",
@@ -25,7 +26,6 @@ class RoutesTest < QuotesAppTest
       "/tag/tag",
       '/authors',
       "/author/author",
-      "/toggle_star/#{@quote.uid}",
       "/delete_quote/#{@quote.uid}",
       '/logout'
     ]
