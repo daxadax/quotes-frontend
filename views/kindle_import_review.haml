@@ -31,5 +31,6 @@
             .remove-duplicate-quote.btn.btn-danger Do not add this quote
             .add-duplicate-quote.btn.btn-success Add this quote
 
-  %h2 Successfully imported quotes:
-  = display_partial quotes_template, :quotes => import.added_quotes
+  - unless import.added_quotes.size == 0
+    %h2 Successfully imported quotes:
+    = display_partial quotes_template, :quotes => import.added_quotes
