@@ -3,7 +3,6 @@ require './application_base'
 class QuotesApp < ApplicationBase
 
   get '/' do
-    session.clear
     redirect user_profile_path if current_user
     redirect '/user/new' if quotes.empty?
     redirect '/random'
