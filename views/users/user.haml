@@ -1,12 +1,12 @@
 .user-profile-boxes
   .row
-    .col-md-8
+    .col-md-9
       %h2= user.nickname
 
       Last login
       = "#{Time.at(user.last_login_time)} from #{user.last_login_address}"
 
-    .profile-box.col-md-4
+    .profile-box.col-md-3
       = display_widget :path => user_tags_path(user.uid, 10), :title => "Top tags"
 
   .profile-box

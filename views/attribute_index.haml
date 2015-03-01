@@ -1,10 +1,11 @@
 %table.table-condensed.attribute-table
-  %thead
-    %tr
-    %th= kind.capitalize
-    %th Number of Quotes
-  %tbody
-    - attributes.each do |attribute, count|
+  - unless attributes.empty?
+    %thead
       %tr
-        %td=link_to "/#{kind}/#{attribute}", attribute
-        %td.text-right= count
+      %th= kind.capitalize
+      %th Number of Quotes
+    %tbody
+      - attributes.each do |attribute, count|
+        %tr
+          %td=link_to "/#{kind}/#{attribute}", attribute
+          %td.text-right= count
