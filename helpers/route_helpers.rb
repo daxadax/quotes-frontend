@@ -9,7 +9,9 @@ module Helpers
       "/quote/#{uid}"
     end
 
-    def publication_path(uid)
+    def publication_path(obj)
+      uid = publication_uid_for(obj)
+
       "/publication/#{uid}"
     end
 
@@ -27,6 +29,12 @@ module Helpers
 
     def delete_quote_path(uid)
       "/delete_quote/#{uid}"
+    end
+
+    def edit_publication_path(obj)
+      uid = publication_uid_for(obj)
+
+      "/publication/edit/#{uid}"
     end
 
     def similar_quotes_path(uid)

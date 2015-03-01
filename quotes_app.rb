@@ -160,7 +160,7 @@ class QuotesApp < ApplicationBase
 
     messages << "Showing #{quotes.size} similar quotes "\
     "for #{link_to quote_path(uid), "quote ##{uid}"} "\
-    "from #{link_to publication_path(quote.publication_uid), quote.title} "\
+    "from #{link_to publication_path(quote), quote.title} "\
     "by #{link_to author_path(quote.author), quote.author}"
     show_quotes quotes
   end
