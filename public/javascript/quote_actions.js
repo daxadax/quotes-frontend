@@ -34,9 +34,14 @@ $(document).ready( function() {
       var path = "/toggle_star/" + quote_uid,
         el = $(this);
 
-      $.post(path).success(function() {
+      toggleFavoriteClass(el);
+
+      $.post(path).fail(function() {
         toggleFavoriteClass(el);
+        alert("Something went wrong - this quote couldn't be added to your favorites")
       });
+    } else {
+        alert("You need to log in to do that!")
     }
   });
 
