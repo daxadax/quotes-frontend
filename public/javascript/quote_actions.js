@@ -92,6 +92,10 @@ $(document).ready( function() {
   var buildQuoteObjectFromFormInput = function(){
     return {
       publication_uid: $('select[name=publication_uid]').val(),
+      author: $('input[name=author]').val(),
+      title: $('input[name=title]').val(),
+      publisher: $('input[name=publisher]').val(),
+      year: $('input[name=year]').val(),
       content: $('textarea[name=content]').val(),
       page_number: $('input[name=page_number]').val(),
       tags: $('input[name=tags]').val()
