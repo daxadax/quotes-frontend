@@ -46,11 +46,11 @@ module Helpers
     end
 
     def kindle_import_template
-      'kindle_import'
+      'import/kindle'
     end
 
     def review_import_template
-      'kindle_import_review'
+      'import/review'
     end
 
     def new_quote_template

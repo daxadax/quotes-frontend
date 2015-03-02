@@ -243,7 +243,7 @@ class QuotesApp < ApplicationBase
       redirect '/import_from_kindle'
     else
       messages << "Successfully imported #{result.added_quotes.size} quotes"
-      display_page '/kindle_import_review', :import => result
+      display_page review_import_template, :import => result
     end
   end
 
