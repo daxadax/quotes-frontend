@@ -14,7 +14,8 @@
           :data =>{:toggle => 'dropdown'}}
           %span.glyphicon.glyphicon-cog{:aria => {:hidden => true}}
         %ul.dropdown-menu
-          %li=link_to edit_publication_path(publication), 'edit'
+          - if current_user_owns?(publication)
+            %li=link_to edit_publication_path(publication), 'edit'
           -# %li=link_to '#', 'delete'
           %li=link_to publication_path(publication), 'permalink'
     .publication-info
