@@ -1,3 +1,5 @@
+require 'manager'
+
 module Helpers
   module UseCaseCalling
 

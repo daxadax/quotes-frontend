@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/daxadax/quotes-manager.git
-  revision: ed856ebc9e7425d1885d8821ba190717d2e78973
+  revision: 07b6bba7fe02de4b4745173a5b9007d57291b223
   specs:
     manager (0.0.1)
 
@@ -14,13 +14,15 @@ GIT
 
 GIT
   remote: https://github.com/daxadax/quotes-users.git
-  revision: 0a31309116f01fb48d33e82c5f28f16b55419b75
+  revision: 728b6848070f1b53a8282e670e8c81ee5f4a8063
   specs:
     users (0.0.1)
+      bcrypt
+      bound
 
 GIT
   remote: https://github.com/daxadax/quotes.git
-  revision: 80810bd8a7aa0758505e284034093c192671f32f
+  revision: bea346412ce701ec56bbc27b872f905e6cde4013
   specs:
     quotes (0.0.1)
       bound
@@ -30,6 +32,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    bcrypt (3.1.10)
     bound (2.1.0)
     capybara (2.4.4)
       mime-types (>= 1.16)
