@@ -5,10 +5,10 @@ gem 'haml'
 gem 'sass'
 gem 'redcarpet'
 
-gem 'manager', :path => '../manager'
-gem 'users', :path => '../users'
-gem 'quotes', :path => '../quotes_backend'
-gem 'persistence', :path => '../persistence'
+gem 'manager', :git => 'https://github.com/daxadax/quotes-manager.git'
+gem 'users', :git => 'https://github.com/daxadax/quotes-users.git'
+gem 'quotes', :git => 'https://github.com/daxadax/quotes.git'
+gem 'persistence', :git => 'https://github.com/daxadax/quotes-persistence.git'
 
 group :development do
   gem 'shotgun'
