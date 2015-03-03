@@ -1,0 +1,88 @@
+GIT
+  remote: https://github.com/daxadax/quotes-manager.git
+  revision: ed856ebc9e7425d1885d8821ba190717d2e78973
+  specs:
+    manager (0.0.1)
+
+GIT
+  remote: https://github.com/daxadax/quotes-persistence.git
+  revision: 5ace238eb1b79d00d59a220fa2d2c6a3043ed163
+  specs:
+    persistence (0.0.1)
+      mysql2
+      sequel
+
+GIT
+  remote: https://github.com/daxadax/quotes-users.git
+  revision: 0a31309116f01fb48d33e82c5f28f16b55419b75
+  specs:
+    users (0.0.1)
+
+GIT
+  remote: https://github.com/daxadax/quotes.git
+  revision: 80810bd8a7aa0758505e284034093c192671f32f
+  specs:
+    quotes (0.0.1)
+      bound
+      kindleclippings (~> 1.3.3)
+      nokogiri (~> 1.6.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    bound (2.1.0)
+    capybara (2.4.4)
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      xpath (~> 2.0)
+    haml (4.0.5)
+      tilt
+    kindleclippings (1.3.4)
+    mime-types (2.4.3)
+    mini_portile (0.6.1)
+    minitest (5.5.0)
+    minitest-capybara (0.7.1)
+      capybara (~> 2.2)
+      minitest (~> 5.0)
+      rake
+    mysql2 (0.3.18)
+    nokogiri (1.6.4.1)
+      mini_portile (~> 0.6.0)
+    rack (1.5.2)
+    rack-protection (1.5.3)
+      rack
+    rack-test (0.6.2)
+      rack (>= 1.0)
+    rake (10.4.2)
+    redcarpet (3.2.0)
+    sass (3.4.7)
+    sequel (4.20.0)
+    shotgun (0.9)
+      rack (>= 1.0)
+    sinatra (1.4.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
+    tilt (1.4.1)
+    xpath (2.0.0)
+      nokogiri (~> 1.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  capybara
+  haml
+  manager!
+  minitest
+  minitest-capybara
+  persistence!
+  quotes!
+  rack-test
+  redcarpet
+  sass
+  shotgun
+  sinatra
+  users!
