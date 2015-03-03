@@ -2,7 +2,7 @@ $(document).ready( function() {
   var defaultBackground = $('body').css('background');
 
   $('.remove-duplicate-quote').mousedown(function() {
-    $(this).parent().siblings('.duplicate-quotes-confirmation').removeClass('hide');
+    $(this).parent().siblings('.duplicate-quotes-cancel').removeClass('hide');
     $(this).parent().siblings('.duplicate-quotes-holder').addClass('hide');
     $(this).parent().parent().css('background', '#d9534f');
     $(this).parent().addClass('hide');
@@ -12,9 +12,8 @@ $(document).ready( function() {
     var quote = $(this).parent().siblings('.duplicate-quotes-holder').data('quote'),
           path = $(this).parent().siblings('.duplicate-quotes-holder').data('path');
 
-    $(this).parent().siblings('.duplicate-quotes-confirmation').removeClass('hide');
+    $(this).parent().siblings('.duplicate-quotes-confirm').removeClass('hide');
     $(this).parent().siblings('.duplicate-quotes-holder').addClass('hide');
-    $(this).parent().parent().css('background', '#5cb85c');
     submitQuote(path, quote, $(this).parent().parent());
     $(this).parent().addClass('hide');
   });
@@ -80,7 +79,8 @@ $(document).ready( function() {
     var response = $.parseJSON(e);
     if( response['uid'] != null ){
       if( container.length ){
-        container.load('/quote_partial/' + response['uid']);
+        container.css('background', '#5cb85c');
+        container.find('.duplicate-quotes-confirm').html( "Quote created successfully" );
       } else {
         location.href = '/quote/' + response['uid'];
       };
