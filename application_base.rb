@@ -198,7 +198,7 @@ class ApplicationBase < Sinatra::Application
         :content => quote.content,
         :publication_uid => quote.publication_uid,
         :page_number => quote.page_number,
-        :tags => quote.tags
+        :tags => quote.tags.join(', ')
       }.to_json
     end
 
