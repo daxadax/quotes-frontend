@@ -98,7 +98,7 @@ module Helpers
     end
 
     def build_tags
-      params['tags'].split(',').each(&:strip!) if params['tags']
+      params['tags'].split(',').each(&:strip!)
     end
 
     def call_use_case(use_case, args = nil)
