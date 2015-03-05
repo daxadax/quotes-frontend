@@ -33,6 +33,9 @@ var stopSuggesting = function() {
 
 var suggestTags = function() {
   var content = contentInput.val();
+  if(availableTags == null) {
+    return
+  }
 
   availableTags.map(function(tag) {
     if(content.match(tag)) {
