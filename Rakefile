@@ -1,4 +1,5 @@
 require 'rake/testtask'
+require 'persistence/tasks'
 
 task :default => :test
 
