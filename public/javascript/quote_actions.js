@@ -1,14 +1,14 @@
 $(document).ready( function() {
   var defaultBackground = $('body').css('background');
 
-  $('.remove-duplicate-quote').mousedown(function() {
+  $('.remove-duplicate-quote').on('mousedown', function() {
     $(this).parent().siblings('.duplicate-quotes-cancel').removeClass('hide');
     $(this).parent().siblings('.duplicate-quotes-holder').addClass('hide');
     $(this).parent().parent().css('background', '#d9534f');
     $(this).parent().addClass('hide');
   });
 
-  $('.add-duplicate-quote').mousedown(function() {
+  $('.add-duplicate-quote').on('mousedown', function() {
     var quote = $(this).parent().siblings('.duplicate-quotes-holder').data('quote'),
           path = $(this).parent().siblings('.duplicate-quotes-holder').data('path');
 
@@ -18,14 +18,14 @@ $(document).ready( function() {
     $(this).parent().addClass('hide');
   });
 
-  $('.cancel').mousedown(function() {
+  $('.cancel').on('mousedown', function() {
     $(this).parent().siblings('.duplicate-quotes-btn-holder').removeClass('hide');
     $(this).parent().siblings('.duplicate-quotes-holder').removeClass('hide');
     $(this).parent().parent().css('background', defaultBackground);
     $(this).parent().addClass('hide');
   });
 
-  $('.star').mousedown(function() {
+  $('.star').on('mousedown', function() {
       var quote_uid = $(this).data('uid'),
         current_user = $(this).data('currentUser');
 
@@ -44,7 +44,7 @@ $(document).ready( function() {
     }
   });
 
-  $('.edit').mousedown(function() {
+  $('.edit').on('mousedown', function() {
     var path = $(this).data('path'),
           container = $(this).closest('.quote');
 
@@ -52,10 +52,13 @@ $(document).ready( function() {
     container.load(path);
   });
 
-  $('#submit-quote').mousedown(function(){
+  $('#submit-quote').on('mousedown', function(){
     var path = $(this).data('path'),
-          data = buildQuoteObjectFromFormInput(),
-          container = $(this).closest('.quote');
+        data = buildQuoteObjectFromFormInput(),
+        container = $(this).closest('.quote');
+
+    // ensure data is only submitted one time
+    $(this).off('mousedown');
 
     // container.attr('src', '/images/ajax-loader.gif');
     submitQuote(path, data, container);
