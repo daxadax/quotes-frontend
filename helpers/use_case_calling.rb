@@ -104,6 +104,5 @@ module Helpers
     def call_use_case(use_case, args = nil)
       eval("Manager::Interface.#{use_case}(#{args})")
     end
-
   end
 end
