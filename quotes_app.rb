@@ -90,7 +90,7 @@ class QuotesApp < ApplicationBase
     quotes = quotes_by_user uid
     quotes = quotes.first(params[:limit].to_i) if params[:limit]
 
-    messages << "You haven't added any quotes!" if quotes.empty?
+    messages << "No added quotes.." if quotes.empty?
     show_quotes quotes
   end
 
@@ -99,7 +99,7 @@ class QuotesApp < ApplicationBase
     quotes = quotes.first(params[:limit].to_i) if params[:limit]
 
     if quotes.empty?
-      messages << "You haven't marked any favorite quotes!"
+      messages << "No favorite quotes.."
     end
 
     show_quotes quotes
@@ -109,7 +109,7 @@ class QuotesApp < ApplicationBase
     tags = build_attributes get_tags(uid)
     tags = tags.first(params[:limit].to_i) if params[:limit]
 
-    messages << "You haven't tagged any quotes!" if tags.empty?
+    messages << "No tagged quotes.." if tags.empty?
     display_page :attribute_index, :attributes => tags, :kind => 'tag'
   end
 
