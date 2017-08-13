@@ -1,20 +1,25 @@
-%form.form-vertical{ :action => 'new', :method => 'post', :role => 'form'}
+%form.form-horizontal{ :action => 'new', :method => 'post', :role => 'form'}
 
-  %legend.center-text.col-xs-6.col-md-offset-3 Register
+  %legend.center-text Create an Account
 
-  .form-group.col-xs-6.col-md-offset-3
-    %label.control-label{:for => 'nickname'} Nickname
-    %input.form-control{:type => 'text', :name => 'nickname'}
+  .form-group
+    %label.control-label.col-sm-2{:for => 'nickname'} Nickname
+    .col-sm-6
+      %input.form-control{:type => 'text', :name => 'nickname'}
 
-  .form-group.col-xs-6.col-md-offset-3
-    %label.control-label{:for => 'email'} Email (optional)
-    %input.form-control{:type => 'text', :name => 'email'}
+  .form-group
+    %label.control-label.col-sm-2{:for => 'email'} Email (optional)
+    .col-sm-6
+      %input.form-control{:type => 'text', :name => 'email'}
 
-  .form-group.col-xs-6.col-md-offset-3
-    %label.control-label{:for => 'password'} Password
-    %input.form-control{:type => 'password', :name => 'password'}
-    %p.help-block.center We never store your password, so make sure your remember it!
+  .form-group
+    %label.control-label.col-sm-2{:for => 'password'} Password
+    .col-sm-6
+      %input.form-control{:type => 'password', :name => 'password'}
+      %p.help-block.center We never store your password, so make sure your remember it!
 
-  %button.btn.btn-primary.col-md-offset-4.col-xs-4{:type => 'submit'} Login
+  .col-sm-offset-2.col-sm-10
+    %button.btn.btn-primary{:type => 'submit'} Login
 
-  .col-md-offset-4.col-xs-4.center=link_to '/login', 'already have an account?'
+  .col-sm-offset-2.col-sm-10
+    =link_to '/login', 'already have an account?'
