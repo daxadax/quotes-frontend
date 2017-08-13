@@ -86,6 +86,7 @@ class ApplicationBase < Sinatra::Application
    quotes.select {|quote| quote.tags.include?(tag)}
   end
 
+  #todo extract this to a service
   def similar_quotes(quote)
     similar = quotes.select do |q|
       next if q == quote
