@@ -5,6 +5,7 @@ gem 'haml'
 gem 'sass'
 gem 'redcarpet'
 gem 'dotenv'
+gem 'rake'
 
 gem 'manager', :git => 'https://github.com/daxadax/quotes-manager.git'
 gem 'users', :git => 'https://github.com/daxadax/quotes-users.git'
